@@ -1,18 +1,6 @@
-import {
-	Controller,
-	Get,
-	Param,
-	Res,
-	Post,
-	Inject,
-	CACHE_MANAGER,
-	UseInterceptors,
-	CacheInterceptor,
-	Logger
-} from '@nestjs/common'
+import { Controller, Get, Param, Post, Res } from '@nestjs/common'
 // import { InjectQueue } from '@nestjs/bull'
 // import { Queue } from 'bull'
-
 import { STATIC } from '@environments'
 
 @Controller()

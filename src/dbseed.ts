@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-import { MLAB_URL, MLAB_DATABASE } from './environments'
+import { MLAB_DATABASE, MLAB_URL } from './environments'
 
 async function main() {
 	console.log('🚀  Server ready')
@@ -102,7 +102,8 @@ async function main() {
 					}
 				},
 				{ upsert: true },
-				function(err, res) {}
+				function(err, res) {
+				}
 			)
 		})
 

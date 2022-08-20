@@ -1,7 +1,4 @@
-import {
-	SchemaDirectiveVisitor,
-	AuthenticationError
-} from 'apollo-server-express'
+import { AuthenticationError, SchemaDirectiveVisitor } from 'apollo-server-express'
 import { defaultFieldResolver, GraphQLField } from 'graphql'
 
 class AuthDirective extends SchemaDirectiveVisitor {

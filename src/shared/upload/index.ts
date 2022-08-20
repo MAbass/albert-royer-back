@@ -1,10 +1,6 @@
 import * as cloudinary from 'cloudinary'
 
-import {
-	CLOUDINARY_NAME,
-	CLOUDINARY_API_KEY,
-	CLOUDINARY_API_SECRET
-} from '@environments'
+import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_NAME } from '@environments'
 
 /**
  * Returns image url by upload file.

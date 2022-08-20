@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql'
+import { Args, Mutation, Resolver } from '@nestjs/graphql'
 
 import { translate } from '@shared'
 

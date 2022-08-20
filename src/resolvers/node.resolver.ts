@@ -1,15 +1,9 @@
-import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { getMongoRepository } from 'typeorm'
-import { ForbiddenError, ApolloError } from 'apollo-server-core'
-import { User } from '../entities/user.entity'
+import { ForbiddenError } from 'apollo-server-core'
 
 import { Node } from '@entities'
-import {
-	CreateNodeInput,
-	UpdateNodeInput,
-	SearchNodeInput,
-	NodeCategory
-} from '../generator/graphql.schema'
+import { CreateNodeInput, NodeCategory, UpdateNodeInput } from '../generator/graphql.schema'
 
 @Resolver('Node')
 export class NodeResolver {
@@ -171,7 +165,7 @@ export class NodeResolver {
 
 			default:
 				if (parentId) {
-					throw new ForbiddenError("category is COMPANY don't need parentId.")
+					throw new ForbiddenError('category is COMPANY don\'t need parentId.')
 				}
 
 				foundNode = await getMongoRepository(Node).findOne({

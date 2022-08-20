@@ -1,24 +1,24 @@
 input CreateRoleInput {
-	code: String!
-	description: String
-	nodeId: ID!
-	permissions: [ID!]!
+    code: String!
+    description: String
+    nodeId: ID!
+    permissions: [ID!]!
 }
 
 type Role {
-	_id: ID!
-	code: String
-	description: String
-	nodeId: ID!
-	permissions: [ID!]!
-	createdAt: Float!
-	updatedAt: Float!
+    _id: ID!
+    code: String
+    description: String
+    nodeId: ID!
+    permissions: [ID!]!
+    createdAt: Float!
+    updatedAt: Float!
 }
 
 type Query {
-	roles: [Role]
+    roles: [Role]
 }
 
 type Mutation {
-	createRole(input: CreateRoleInput!): Role
+    createRole(input: CreateRoleInput!): Role
 }

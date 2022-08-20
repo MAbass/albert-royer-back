@@ -1,8 +1,8 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { getMongoRepository } from 'typeorm'
 import { ForbiddenError } from 'apollo-server-core'
 
-import { Role, Node, Permission } from '@entities'
+import { Node, Permission, Role } from '@entities'
 import { CreateRoleInput } from '../generator/graphql.schema'
 
 @Resolver('Role')

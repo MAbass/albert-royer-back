@@ -1,4 +1,4 @@
-import { Resolver, ResolveField } from '@nestjs/graphql'
+import { ResolveField, Resolver } from '@nestjs/graphql'
 
 @Resolver('Result')
 export class ResultResolver {

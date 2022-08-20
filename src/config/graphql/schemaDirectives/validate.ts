@@ -1,10 +1,5 @@
 import { SchemaDirectiveVisitor } from 'graphql-tools'
-import {
-	defaultFieldResolver,
-	GraphQLArgument,
-	GraphQLField,
-	GraphQLObjectType
-} from 'graphql'
+import { defaultFieldResolver, GraphQLArgument, GraphQLField, GraphQLObjectType } from 'graphql'
 import { registerSchema, validate } from 'class-validator'
 import { UserInputError } from 'apollo-server-core'
 import { Logger } from '@nestjs/common'

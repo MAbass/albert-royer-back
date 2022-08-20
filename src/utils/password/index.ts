@@ -1,4 +1,4 @@
-import { hash, compare } from 'bcrypt'
+import { compare, hash } from 'bcrypt'
 
 import { BCRYPT_SALT } from '../../environments'
 

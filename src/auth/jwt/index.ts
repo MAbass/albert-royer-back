@@ -6,12 +6,12 @@ import { User } from '@entities'
 import { LoginResponse } from '../../generator/graphql.schema'
 
 import {
-	ISSUER,
 	ACCESS_TOKEN_SECRET,
-	REFRESH_TOKEN_SECRET,
+	AUDIENCE,
 	EMAIL_TOKEN_SECRET,
-	RESETPASS_TOKEN_SECRET,
-	AUDIENCE
+	ISSUER,
+	REFRESH_TOKEN_SECRET,
+	RESETPASS_TOKEN_SECRET
 } from '@environments'
 
 type TokenType =
@@ -74,8 +74,8 @@ export const generateToken = async (
 			subject: user.local
 				? user.local.email
 				: user.google
-				? user.google.email
-				: user.facebook.email,
+					? user.google.email
+					: user.facebook.email,
 			audience: AUDIENCE,
 			algorithm: 'HS256',
 			expiresIn: common[type].signOptions.expiresIn // 15m
@@ -147,7 +147,7 @@ export const tradeToken = async (user: User): Promise<LoginResponse> => {
 	}
 
 	if (!user.isActive) {
-		throw new ForbiddenError("User already doesn't exist.")
+		throw new ForbiddenError('User already doesn\'t exist.')
 	}
 
 	if (user.isLocked) {

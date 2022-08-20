@@ -8,22 +8,9 @@ import * as compression from 'compression'
 import * as helmet from 'helmet'
 import * as bodyParser from 'body-parser'
 import * as rateLimit from 'express-rate-limit'
-import {
-	PORT,
-	NODE_ENV,
-	DOMAIN,
-	PRIMARY_COLOR,
-	END_POINT,
-	VOYAGER,
-	RATE_LIMIT_MAX
-} from '@environments'
+import { DOMAIN, END_POINT, NODE_ENV, PORT, PRIMARY_COLOR, RATE_LIMIT_MAX, VOYAGER } from '@environments'
 import { MyLogger } from '@config'
-import {
-	LoggingInterceptor,
-	TimeoutInterceptor,
-	ValidationPipe,
-	LoggerMiddleware
-} from '@common'
+import { LoggerMiddleware, LoggingInterceptor, TimeoutInterceptor, ValidationPipe } from '@common'
 import '@validations'
 
 declare const module: any
@@ -76,16 +63,16 @@ async function bootstrap() {
 
 		// NOTE: voyager
 		NODE_ENV !== 'production' &&
-			app.use(
-				`/${VOYAGER}`,
-				voyagerMiddleware({
-					displayOptions: {
-						skipRelay: false,
-						skipDeprecated: false
-					},
-					endpointUrl: `/${END_POINT}`
-				})
-			)
+		app.use(
+			`/${VOYAGER}`,
+			voyagerMiddleware({
+				displayOptions: {
+					skipRelay: false,
+					skipDeprecated: false
+				},
+				endpointUrl: `/${END_POINT}`
+			})
+		)
 
 		// NOTE: interceptors
 		app.useGlobalInterceptors(new LoggingInterceptor())
@@ -105,36 +92,37 @@ async function bootstrap() {
 
 		NODE_ENV !== 'production'
 			? (Logger.log(
-					`🤬  Application is running on: ${await app.getUrl()}`,
-					'NestJS',
-					false
-			  ),
-			  Logger.log(
+				`🤬  Application is running on: ${await app.getUrl()}`,
+				'NestJS',
+				false
+			),
+				Logger.log(
 					`🚀  Server ready at http://${DOMAIN}:${chalk
 						.hex(PRIMARY_COLOR)
 						.bold(PORT.toString())}/${END_POINT}`,
 					'Bootstrap',
 					false
-			  ),
-			  Logger.log(
+				),
+				Logger.log(
 					`🚀  Subscriptions ready at ws://${DOMAIN}:${chalk
 						.hex(PRIMARY_COLOR)
 						.bold(PORT.toString())}/${END_POINT}`,
 					'Bootstrap',
 					false
-			  ))
+				))
 			: Logger.log(
-					`🚀  Server is listening on port ${chalk
-						.hex(PRIMARY_COLOR)
-						.bold(PORT.toString())}`,
-					'Bootstrap',
-					false
-			  )
+				`🚀  Server is listening on port ${chalk
+					.hex(PRIMARY_COLOR)
+					.bold(PORT.toString())}`,
+				'Bootstrap',
+				false
+			)
 	} catch (error) {
 		Logger.error(`❌  Error starting server, ${error}`, '', 'Bootstrap', false)
 		process.exit()
 	}
 }
+
 bootstrap().catch(e => {
 	Logger.error(`❌  Error starting server, ${e}`, '', 'Bootstrap', false)
 	throw e

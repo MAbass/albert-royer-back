@@ -1,49 +1,35 @@
-import {
-	Resolver,
-	Query,
-	Mutation,
-	Args,
-	Subscription,
-	Context,
-	ResolveField,
-	Parent
-} from '@nestjs/graphql'
+import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver, Subscription } from '@nestjs/graphql'
 import { getMongoRepository } from 'typeorm'
-import {
-	ApolloError,
-	AuthenticationError,
-	ForbiddenError,
-	UserInputError
-} from 'apollo-server-core'
-import { uuidv4 } from '@utils'
+import { ApolloError, AuthenticationError, ForbiddenError, UserInputError } from 'apollo-server-core'
+import { comparePassword, hashPassword, uuidv4 } from '@utils'
 
 import { User } from '@entities'
-import { comparePassword, hashPassword } from '@utils'
 import { EmailResolver } from './email.resolver'
 import { FileResolver } from './file.resolver'
 import {
 	CreateUserInput,
-	UpdateUserInput,
+	LoginResponse,
 	LoginUserInput,
+	RefreshTokenResponse,
 	Result,
 	SearchInput,
-	UserResult,
-	LoginResponse,
-	RefreshTokenResponse,
 	Type,
+	UpdateUserInput,
+	UserResult,
 	UserType
 } from '../generator/graphql.schema'
-import { generateToken, verifyToken, tradeToken } from '@auth'
+import { generateToken, tradeToken, verifyToken } from '@auth'
 import { sendMail, stripe } from '@shared'
 
-import { USER_SUBSCRIPTION, STRIPE_PLAN } from '@environments'
+import { USER_SUBSCRIPTION } from '@environments'
 
 @Resolver('User')
 export class UserResolver {
 	constructor(
 		private readonly emailResolver: EmailResolver,
 		private readonly fileResolver: FileResolver
-	) {}
+	) {
+	}
 
 	@Query()
 	async hello(): Promise<string> {
@@ -521,8 +507,8 @@ export class UserResolver {
 		const email = currentUser.local
 			? currentUser.local.email
 			: currentUser.google
-			? currentUser.google.email
-			: currentUser.facebook.email
+				? currentUser.google.email
+				: currentUser.facebook.email
 
 		const customer = await stripe.customers.create({
 			email

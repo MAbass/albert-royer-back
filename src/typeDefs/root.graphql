@@ -5,15 +5,15 @@ directive @hasPath(path: String) on FIELD | FIELD_DEFINITION
 # directive @hasScope(scope: [String]) on QUERY | FIELD
 # function
 directive @deprecated(
-	reason: String = "No longer supported"
+    reason: String = "No longer supported"
 ) on FIELD_DEFINITION | ENUM_VALUE
 # limit
 directive @rateLimit(
-	max: Int
-	window: String
-	message: String
-	identityArgs: [String]
-	arrayLengthField: String
+    max: Int
+    window: String
+    message: String
+    identityArgs: [String]
+    arrayLengthField: String
 ) on FIELD_DEFINITION
 # validate
 directive @length(max: Int) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
@@ -33,7 +33,7 @@ scalar Date
 scalar Upload
 
 schema {
-	query: Query
-	mutation: Mutation
-	subscription: Subscription
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
 }

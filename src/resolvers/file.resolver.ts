@@ -1,11 +1,10 @@
-import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql'
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { getMongoRepository } from 'typeorm'
 import { createWriteStream } from 'fs'
 import { uuidv4 } from '@utils'
 
 import { File } from '@entities'
 import { uploadFile } from '@shared'
-import { ApolloError } from 'apollo-server-core'
 
 @Resolver('File')
 export class FileResolver {

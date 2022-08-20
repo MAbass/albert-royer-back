@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { GqlOptionsFactory, GqlModuleOptions } from '@nestjs/graphql'
+import { GqlModuleOptions, GqlOptionsFactory } from '@nestjs/graphql'
 import { MemcachedCache } from 'apollo-server-cache-memcached'
 import { PubSub } from 'graphql-subscriptions'
 // import { join } from 'path'
-import { GraphQLExtension, AuthenticationError } from 'apollo-server-core'
+import { AuthenticationError } from 'apollo-server-core'
 import { MockList } from 'graphql-tools'
 import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json'
 import * as depthLimit from 'graphql-depth-limit'
@@ -13,21 +13,12 @@ import * as depthLimit from 'graphql-depth-limit'
 import { getMongoRepository } from 'typeorm'
 import * as chalk from 'chalk'
 // import responseCachePlugin from 'apollo-server-plugin-response-cache'
-
 import schemaDirectives from './schemaDirectives'
 import directiveResolvers from './directiveResolvers'
 import { verifyToken } from '@auth'
 import { User } from '@entities'
 // import { logger } from '../../common'
-
-import {
-	NODE_ENV,
-	PRIMARY_COLOR,
-	END_POINT,
-	FE_URL,
-	GRAPHQL_DEPTH_LIMIT,
-	ACCESS_TOKEN
-} from '@environments'
+import { ACCESS_TOKEN, END_POINT, FE_URL, GRAPHQL_DEPTH_LIMIT, NODE_ENV, PRIMARY_COLOR } from '@environments'
 
 // const gateway = new ApolloGateway({
 // 	serviceList: [
@@ -95,9 +86,9 @@ export class GraphqlService implements GqlOptionsFactory {
 			cors:
 				NODE_ENV === 'production'
 					? {
-							origin: FE_URL!,
-							credentials: true // <-- REQUIRED backend setting
-					  }
+						origin: FE_URL!,
+						credentials: true // <-- REQUIRED backend setting
+					}
 					: true,
 			bodyParserConfig: { limit: '50mb' },
 			onHealthCheck: () => {
@@ -222,7 +213,7 @@ export class GraphqlService implements GqlOptionsFactory {
 				keepAlive: 1000,
 				onConnect: async (connectionParams, webSocket, context) => {
 					NODE_ENV !== 'production' &&
-						Logger.debug(`🔗  Connected to websocket`, 'GraphQL')
+					Logger.debug(`🔗  Connected to websocket`, 'GraphQL')
 
 					let currentUser
 
@@ -250,7 +241,7 @@ export class GraphqlService implements GqlOptionsFactory {
 				},
 				onDisconnect: async (webSocket, context) => {
 					NODE_ENV !== 'production' &&
-						Logger.error(`❌  Disconnected to websocket`, '', 'GraphQL', false)
+					Logger.error(`❌  Disconnected to websocket`, '', 'GraphQL', false)
 
 					const { initPromise } = context
 					const { currentUser } = await initPromise

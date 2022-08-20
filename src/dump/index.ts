@@ -1,14 +1,7 @@
 import * as child from 'child_process'
 import * as formatDate from 'dateformat'
 // mongorestore --host hostname.com --port 27017 --username user --password pass mongodump/db/
-
-import {
-	MLAB_HOST,
-	MLAB_PORT,
-	MLAB_DATABASE,
-	MLAB_USER,
-	MLAB_PASS
-} from '@environments'
+import { MLAB_DATABASE, MLAB_HOST, MLAB_PASS, MLAB_PORT, MLAB_USER } from '@environments'
 
 enum fileType {
 	JSON,

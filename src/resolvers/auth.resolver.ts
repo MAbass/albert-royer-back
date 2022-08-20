@@ -1,14 +1,9 @@
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql'
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql'
 import { getMongoRepository } from 'typeorm'
 import { ApolloError } from 'apollo-server-core'
 
-import { LoginResponse, Gender } from '../generator/graphql.schema'
-import {
-	authenticateGooglePlus,
-	authenticateFacebook,
-	authenticateGoogle,
-	tradeToken
-} from '@auth'
+import { Gender, LoginResponse } from '../generator/graphql.schema'
+import { authenticateFacebook, authenticateGoogle, authenticateGooglePlus, tradeToken } from '@auth'
 import { User } from '@entities'
 
 @Resolver('Auth')

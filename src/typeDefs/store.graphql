@@ -1,19 +1,19 @@
 input CreateStoreInput {
-	name: String!
+    name: String!
 }
 
 type Store {
-	_id: ID!
-	name: String
-  isActive: Boolean!
-	createdAt: Float!
-	updatedAt: Float!
+    _id: ID!
+    name: String
+    isActive: Boolean!
+    createdAt: Float!
+    updatedAt: Float!
 }
 
 type Query {
-	stores: [Store]
+    stores: [Store]
 }
 
 type Mutation {
-	createStore(input: CreateStoreInput!): Store
+    createStore(input: CreateStoreInput!): Store
 }

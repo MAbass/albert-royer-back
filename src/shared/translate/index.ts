@@ -1,6 +1,3 @@
-import { GOOGLE_APPLICATION_CREDENTIALS } from '../../environments'
-import GoogleTranslate from 'google-translate'
-
 // const googleTranslate = GoogleTranslate(GOOGLE_APPLICATION_CREDENTIALS)
 
 const loremIpsum = 'I am using google translator to convert this text'

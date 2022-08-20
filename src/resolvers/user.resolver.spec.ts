@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UserResolver } from './user.resolver'
-import { User, Email, File } from '../entities'
+import { Email, File, User } from '../entities'
 
 import { AppModule } from '../app.module'
 

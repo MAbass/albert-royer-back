@@ -4,7 +4,7 @@ import * as request from 'supertest'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { User, Email, File } from '../../src/entities'
+import { Email, File, User } from '../../src/entities'
 
 import { AppModule } from '../../src/app.module'
 
@@ -55,7 +55,7 @@ describe('UserModule (e2e)', () => {
 				operationName: null,
 				variables: {},
 				query:
-					// tslint:disable-next-line:max-line-length
+				// tslint:disable-next-line:max-line-length
 					'{ users { _id firstName lastName resetPasswordToken resetPasswordExpires fullName isLocked reason isActive createdAt updatedAt } }'
 			})
 			.expect(200)

@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql'
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { getMongoRepository } from 'typeorm'
 import { ForbiddenError } from 'apollo-server-core'
 

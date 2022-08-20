@@ -1,13 +1,6 @@
 import { uuidv4 } from '@utils'
 
-import {
-	NodeCategory,
-	Company,
-	City,
-	Store,
-	Department,
-	Position
-} from '../generator/graphql.schema'
+import { City, Company, Department, NodeCategory, Position, Store } from '../generator/graphql.schema'
 import { Column, Entity, ObjectIdColumn } from 'typeorm'
 import { Expose, plainToClass } from 'class-transformer'
 
