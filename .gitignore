@@ -12,7 +12,7 @@ node_modules/
 dist
 
 # dotenv environment variables file
-.env
+src/config/envs/env.json
 
 # others
 graphql.schema.ts

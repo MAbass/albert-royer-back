@@ -1,9 +1,15 @@
-import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common'
+import {
+	CallHandler,
+	ExecutionContext,
+	Injectable,
+	Logger,
+	NestInterceptor
+} from '@nestjs/common'
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import * as chalk from 'chalk'
 
-import { PRIMARY_COLOR } from '../../environments'
+import { PRIMARY_COLOR } from '@environments'
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -15,7 +21,7 @@ export class LoggingInterceptor implements NestInterceptor {
 				.bold(`${context.getArgs()[3]['fieldName']}`)
 			return next.handle().pipe(
 				tap(() => {
-					Logger.debug(`⛩  ${parentType} » ${fieldName}`, 'GraphQL')
+					Logger.debug(`⛩  ${parentType} » ${fieldName}`, 'RestAPI')
 				})
 			)
 		} else {
@@ -27,7 +33,7 @@ export class LoggingInterceptor implements NestInterceptor {
 				.bold(`${context.getArgs()[0].route.stack[0].method}`)
 			return next.handle().pipe(
 				tap(() => {
-					Logger.debug(`⛩  ${parentType} » ${fieldName}`, 'GraphQL')
+					Logger.debug(`⛩  ${parentType} » ${fieldName}`, 'RestAPI')
 				})
 			)
 		}

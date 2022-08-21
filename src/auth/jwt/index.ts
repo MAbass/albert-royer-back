@@ -1,9 +1,5 @@
 import { sign, verify } from 'jsonwebtoken'
 import { getMongoRepository } from 'typeorm'
-import { AuthenticationError, ForbiddenError } from 'apollo-server-core'
-
-import { User } from '@entities'
-import { LoginResponse } from '../../generator/graphql.schema'
 
 import {
 	ACCESS_TOKEN_SECRET,
@@ -13,6 +9,8 @@ import {
 	REFRESH_TOKEN_SECRET,
 	RESETPASS_TOKEN_SECRET
 } from '@environments'
+import { User } from '@entities'
+import { ForbiddenException } from '@nestjs/common'
 
 type TokenType =
 	| 'accessToken'
@@ -71,11 +69,7 @@ export const generateToken = async (
 		common[type].privateKey,
 		{
 			issuer: ISSUER,
-			subject: user.local
-				? user.local.email
-				: user.google
-					? user.google.email
-					: user.facebook.email,
+			subject: 'user.local',
 			audience: AUDIENCE,
 			algorithm: 'HS256',
 			expiresIn: common[type].signOptions.expiresIn // 15m
@@ -104,13 +98,10 @@ export const verifyToken = async (
 
 	await verify(token, common[type].privateKey, async (err, data) => {
 		if (err) {
-			throw new AuthenticationError(
+			/*throw new AuthenticationError(
 				'Authentication token is invalid, please try again.'
-			)
+			)*/
 		}
-
-		// console.log(data)
-
 		currentUser = await getMongoRepository(User).findOne({
 			_id: data._id
 		})
@@ -123,7 +114,7 @@ export const verifyToken = async (
 	// console.log(currentUser)
 
 	if (currentUser && !currentUser.isVerified) {
-		throw new ForbiddenError('Please verify your email.')
+		throw new ForbiddenException('Please verify your email.')
 	}
 
 	return currentUser
@@ -141,18 +132,18 @@ export const verifyToken = async (
  *
  * @beta
  */
-export const tradeToken = async (user: User): Promise<LoginResponse> => {
-	if (!user.isVerified) {
-		throw new ForbiddenError('Please verify your email.')
-	}
+export const tradeToken = async (user: User) => {
+	/*	if (!user.isVerified) {
+			throw new ForbiddenException('Please verify your email.')
+		}
 
-	if (!user.isActive) {
-		throw new ForbiddenError('User already doesn\'t exist.')
-	}
+		if (!user.isActive) {
+			throw new ForbiddenException('User already doesn\'t exist.')
+		}
 
-	if (user.isLocked) {
-		throw new ForbiddenError('Your email has been locked.')
-	}
+		if (user.isLocked) {
+			throw new ForbiddenException('Your email has been locked.')
+		}*/
 
 	const accessToken = await generateToken(user, 'accessToken')
 	const refreshToken = await generateToken(user, 'refreshToken')

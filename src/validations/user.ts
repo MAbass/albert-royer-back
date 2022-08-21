@@ -1,81 +1,41 @@
-import { registerSchema, ValidationSchema } from 'class-validator'
+import {
+	IsEmail,
+	IsNotEmpty,
+	IsOptional,
+	IsString,
+	MinLength
+} from 'class-validator'
 
-const firstName = [
-	{
-		type: 'minLength', // validation type. All validation types are listed in ValidationTypes class.
-		constraints: [3],
-		message: 'Your firstName must be between 3 and 20 characters'
-	},
-	{
-		type: 'maxLength',
-		constraints: [20],
-		message: 'Your firstName must be between 3 and 20 characters'
-	}
-]
+export class AddUserDTO {
+	@MinLength(3)
+	@IsString()
+	@IsNotEmpty()
+	public firstname: string
 
-const lastName = [
-	{
-		type: 'minLength', // validation type. All validation types are listed in ValidationTypes class.
-		constraints: [3],
-		message: 'Your lastName must be between 3 and 20 characters.'
-	},
-	{
-		type: 'maxLength',
-		constraints: [20],
-		message: 'Your lastName must be between 3 and 20 characters.'
-	}
-]
+	@IsString()
+	@MinLength(3)
+	@IsNotEmpty()
+	public lastname: string
 
-const email = [
-	{
-		type: 'isEmail',
-		constraints: [{}],
-		message: 'Your email is invalid.'
-	}
-]
-
-const password = [
-	{
-		type: 'minLength', // validation type. All validation types are listed in ValidationTypes class.
-		constraints: [1],
-		message: 'Your password must be between 1 and 8 characters.'
-	},
-	{
-		type: 'maxLength',
-		constraints: [8],
-		message: 'Your password must be between 1 and 8 characters.'
-	}
-]
-
-const createUserValidation: ValidationSchema = {
-	// using interface here is not required, its just for type-safety
-	name: 'createUserRegister', // this is required, and must be unique
-	properties: {
-		firstName,
-		lastName,
-		email,
-		password
-	}
+	@IsString()
+	@IsEmail()
+	@IsNotEmpty()
+	public email: string
 }
 
-const updateUserValidation: ValidationSchema = {
-	// using interface here is not required, its just for type-safety
-	name: 'updateUserRegister', // this is required, and must be unique
-	properties: {
-		firstName,
-		lastName,
-		password
-	}
-}
+export class UpdateUserDTO {
+	@MinLength(3)
+	@IsString()
+	@IsNotEmpty()
+	public firstname: string
 
-export const loginUserValidation: ValidationSchema = {
-	name: 'loginUserRegister',
-	properties: {
-		email,
-		password
-	}
-}
+	@IsString()
+	@MinLength(3)
+	@IsNotEmpty()
+	public lastname: string
 
-registerSchema(createUserValidation)
-registerSchema(updateUserValidation)
-registerSchema(loginUserValidation)
+	@IsString()
+	@IsNotEmpty()
+	@IsOptional()
+	public email: string
+}

@@ -1,9 +1,14 @@
 import * as nodemailer from 'nodemailer'
 import * as handlebars from 'handlebars'
 import * as fs from 'fs'
-import { User } from '@entities'
 
-import { AUTHOR, END_POINT, ISSUER, NODEMAILER_PASS, NODEMAILER_USER } from '@environments'
+import {
+	AUTHOR,
+	END_POINT,
+	ISSUER,
+	NODEMAILER_PASS,
+	NODEMAILER_USER
+} from '@environments'
 
 type Type = 'verifyEmail' | 'forgotPassword'
 
@@ -25,7 +30,7 @@ type Type = 'verifyEmail' | 'forgotPassword'
  */
 export const sendMail = async (
 	type: Type,
-	user: User,
+	user,
 	req: any,
 	token: string,
 	_id: string
@@ -88,12 +93,12 @@ export const sendMail = async (
 				link: `${req.headers.origin}/reset/${token}`,
 				subject: 'Reset Your Password',
 				text1:
-				// tslint:disable-next-line:quotemark
-					'Tap the button below to reset your customer account password. If you didn\'t request a new password, you can safely delete this email.',
+					// tslint:disable-next-line:quotemark
+					"Tap the button below to reset your customer account password. If you didn't request a new password, you can safely delete this email.",
 				button: 'Set New Password',
 				text2:
-				// tslint:disable-next-line:quotemark
-					'If that doesn\'t work, copy and paste the following link in your browser:',
+					// tslint:disable-next-line:quotemark
+					"If that doesn't work, copy and paste the following link in your browser:",
 				...common
 			}
 		}
@@ -142,7 +147,7 @@ export const sendMail = async (
 				console.log(err)
 				// Logger.error(err.message)
 			} else {
-				console.log('Message sent: ' + JSON.parse(info))
+				console.log('Message sent: ' + info)
 				// Logger.debug(info.response.message, 'Nodemailer')
 			}
 		})

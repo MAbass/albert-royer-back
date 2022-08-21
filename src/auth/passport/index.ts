@@ -3,7 +3,12 @@ import * as GooglePlusTokenStrategy from 'passport-google-plus-token'
 import * as FacebookTokenStrategy from 'passport-facebook-token'
 import { Strategy as GoogleTokenStrategy } from 'passport-google-token'
 
-import { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '@environments'
+import {
+	FACEBOOK_APP_ID,
+	FACEBOOK_APP_SECRET,
+	GOOGLE_CLIENT_ID,
+	GOOGLE_CLIENT_SECRET
+} from '@environments'
 
 interface OAuthResponse {
 	readonly data: any

@@ -1,119 +1,93 @@
-import * as dotenv from 'dotenv'
-
-dotenv.config()
+import { ConfigEnvironment } from '@config-env'
 
 // environment
 const NODE_ENV: string = process.env.NODE_ENV || 'development'
 
 // author
-const AUTHOR: string = process.env.AUTHOR || 'Chnirt'
-
+const AUTHOR: string =
+	ConfigEnvironment.getEnvPath('AUTHOR') || 'Mamadou Abass DIALLO'
 // application
-const PRIMARY_COLOR: string = process.env.PRIMARY_COLOR || '#87e8de'
-const DOMAIN: string = process.env.DOMAIN || 'localhost'
-const PORT: number = +process.env.PORT || 14047
-const END_POINT: string = process.env.END_POINT || 'graphql'
-const VOYAGER: string = process.env.VOYAGER || 'voyager'
-const FE_URL: string = process.env.FE_URL || 'xxx'
-const RATE_LIMIT_MAX: number = +process.env.RATE_LIMIT_MAX || 10000
-const GRAPHQL_DEPTH_LIMIT: number = +process.env.GRAPHQL_DEPTH_LIMIT || 3
+const PRIMARY_COLOR: string =
+	ConfigEnvironment.getEnvPath('PRIMARY_COLOR') || '#87e8de'
+const DOMAIN: string = ConfigEnvironment.getEnvPath('DOMAIN') || 'localhost'
+const PORT: number = +ConfigEnvironment.getEnvPath('PORT') || 8080
+const END_POINT: string = ConfigEnvironment.getEnvPath('END_POINT') || 'api/v1'
+const RATE_LIMIT_MAX: number =
+	+ConfigEnvironment.getEnvPath('RATE_LIMIT_MAX') || 10000
 
 // static
-const STATIC: string = process.env.STATIC || 'static'
-
-// mlab
-const MLAB_USER = process.env.MLAB_USER || 'admin'
-const MLAB_PASS = process.env.MLAB_PASS || 'chnirt1803'
-const MLAB_HOST = process.env.MLAB_HOST || 'cluster0.eoxxs.mongodb.net'
-const MLAB_PORT = +process.env.MLAB_PORT || 47420
-const MLAB_DATABASE = process.env.MLAB_DATABASE || 'nestjs-v7'
-const MLAB_URL =
-	process.env.MLAB_URL ||
-	`mongodb+srv://${MLAB_USER}:${MLAB_PASS}@${MLAB_HOST}/${MLAB_DATABASE}?retryWrites=true&w=majority`
+const STATIC: string = ConfigEnvironment.getEnvPath('STATIC') || 'static'
 
 // mongodb
-const MONGO_URL: string = +process.env.MONGO_PORT
-	? `mongodb://localhost:${process.env.MONGO_PORT}`
-	: MLAB_URL
-const MONGO_PORT: number = +process.env.MONGO_PORT || 11049
-const MONGO_DB: string = process.env.MONGO_PORT ? 'nestjs-v7' : MLAB_DATABASE
+const MONGO_PORT: number = +ConfigEnvironment.getEnvPath('MONGO_PORT') || 27019
+const MONGO_HOST: string =
+	ConfigEnvironment.getEnvPath('MONGO_HOST') || 'localhost'
+const MONGO_DB: string = ConfigEnvironment.getEnvPath('MONGO_DATABASE')
+const MONGO_PASS: string = ConfigEnvironment.getEnvPath('MONGO_PASS')
+const MONGO_USER: string = ConfigEnvironment.getEnvPath('MONGO_USER')
+
+export const MONGO_URL = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
+// export const MONGO_URL = `mongodb://${MONGO_HOST}`
+
+// console.log('MONGO_PORT: ', MONGO_PORT)
+// console.log('MONGO_USER: ', ConfigEnvironment.getEnvPath('MONGO_USER'))
+// console.log('MONGO_DATABASE: ', MONGO_DB)
+// console.log('MONGO_PASS: ', MONGO_PASS)
+// console.log('MONGO_DB: ', MONGO_DB)
+// console.log('MONGO_URL: ', MONGO_URL)
+// console.log(process.env)
 
 // typeorm
-const enviroment = {
-	development: {
-		url: MLAB_URL
+const environment = {
+	dev: {
+		url: MONGO_URL
 	},
-	testing: {
-		url: MLAB_URL
+	default: {
+		url: MONGO_URL
 	},
-	staging: {
-		url: MLAB_URL
+	prod: {
+		url: MONGO_URL
 		// host: 'localhost',
 		// port: MONGO_PORT!,
 		// username: '',
 		// password: '',
 		// database: MONGO_DB!,
-	},
-	production: {
-		url: MLAB_URL
 	}
 }
-const TYPEORM = enviroment[NODE_ENV]
+const TYPEORM = environment[NODE_ENV]
 
 // jsonwebtoken
-const ISSUER: string = process.env.ISSUER || 'Chnirt corp'
+const ISSUER: string = ConfigEnvironment.getEnvPath('ISSUER') || 'Chnirt corp'
 const AUDIENCE: string = process.env.AUDIENCE || 'http://chnirt.github.io'
-const ACCESS_TOKEN: string = process.env.ACCESS_TOKEN || 'access-token'
 const ACCESS_TOKEN_SECRET: string =
-	process.env.ACCESS_TOKEN_SECRET || 'access-token-key'
-const REFRESH_TOKEN: string = process.env.REFRESH_TOKEN || 'refresh-token'
+	ConfigEnvironment.getEnvPath('ACCESS_TOKEN_SECRET') || 'access-token-key'
 const REFRESH_TOKEN_SECRET: string =
-	process.env.REFRESH_TOKEN_SECRET || 'refresh-token-key'
-const EMAIL_TOKEN: string = process.env.EMAIL_TOKEN || 'email-token'
+	ConfigEnvironment.getEnvPath('REFRESH_TOKEN_SECRET') || 'refresh-token-key'
 const EMAIL_TOKEN_SECRET: string =
-	process.env.EMAIL_TOKEN_SECRET || 'email-token-key'
-const RESETPASS_TOKEN: string = process.env.RESETPASS_TOKEN || 'resetpass-token'
+	ConfigEnvironment.getEnvPath('EMAIL_TOKEN_SECRET') || 'email-token-key'
 const RESETPASS_TOKEN_SECRET: string =
-	process.env.RESETPASS_TOKEN_SECRET || 'resetpass-token-key'
+	ConfigEnvironment.getEnvPath('RESETPASS_TOKEN_SECRET') ||
+	'resetpass-token-key'
 
 // bcrypt
-const BCRYPT_SALT: number = +process.env.BCRYPT_SALT || 10
+const BCRYPT_SALT: number = +ConfigEnvironment.getEnvPath('BCRYPT_SALT') || 10
 
 // nodemailer
-const NODEMAILER_USER: string = process.env.NODEMAILER_USER || 'xxx'
-const NODEMAILER_PASS: string = process.env.NODEMAILER_PASS || 'xxx'
-
-// cloudinary
-const CLOUDINARY_NAME: string = process.env.CLOUDINARY_NAME || 'chnirt'
-const CLOUDINARY_API_KEY: string =
-	process.env.CLOUDINARY_API_KEY || '475584948229723'
-const CLOUDINARY_API_SECRET: string =
-	process.env.CLOUDINARY_API_SECRET || 'Duno2be58mE2lCFLcuOssGKG54c'
-
-// pubsub
-const NOTIFICATION_SUBSCRIPTION = 'newNotification'
-const USER_SUBSCRIPTION = 'newUser'
-const MESSAGES_SUBSCRIPTION = 'newMessages'
+const NODEMAILER_USER: string =
+	ConfigEnvironment.getEnvPath('NODEMAILER_USER') || 'xxx'
+const NODEMAILER_PASS: string =
+	ConfigEnvironment.getEnvPath('NODEMAILER_PASS') || 'xxx'
 
 // passport
-const GOOGLE_CLIENT_ID: string = process.env.GOOGLE_CLIENT_ID || 'xxx'
-const GOOGLE_CLIENT_SECRET: string = process.env.GOOGLE_CLIENT_SECRET || 'xxx'
-const GOOGLE_CALLBACK_URL: string =
-	process.env.GOOGLE_CALLBACK_URL || 'auth/google/callback'
+const GOOGLE_CLIENT_ID: string =
+	ConfigEnvironment.getEnvPath('GOOGLE_CLIENT_ID') || 'xxx'
+const GOOGLE_CLIENT_SECRET: string =
+	ConfigEnvironment.getEnvPath('GOOGLE_CLIENT_SECRET') || 'xxx'
 
-const FACEBOOK_APP_ID: string = process.env.FACEBOOK_APP_ID || 'xxx'
-const FACEBOOK_APP_SECRET: string = process.env.FACEBOOK_APP_SECRET || 'xxx'
-const FACEBOOK_CALLBACK_URL: string =
-	process.env.FACEBOOK_CALLBACK_URL || 'auth/facebook/callback'
-
-// google cloud
-const GOOGLE_APPLICATION_CREDENTIALS: string =
-	process.env.GOOGLE_APPLICATION_CREDENTIALS || 'xxx'
-
-// stripe
-const STRIPE_PUBLIC_KEY: string = process.env.STRIPE_PUBLIC_KEY || 'xxx'
-const STRIPE_SECRET_KEY: string = process.env.STRIPE_SECRET_KEY || 'xxx'
-const STRIPE_PLAN: string = process.env.STRIPE_PLAN || 'xxx'
+const FACEBOOK_APP_ID: string =
+	ConfigEnvironment.getEnvPath('FACEBOOK_APP_ID') || 'xxx'
+const FACEBOOK_APP_SECRET: string =
+	ConfigEnvironment.getEnvPath('FACEBOOK_APP_SECRET') || 'xxx'
 
 export {
 	NODE_ENV,
@@ -122,48 +96,25 @@ export {
 	DOMAIN,
 	PORT,
 	END_POINT,
-	VOYAGER,
-	FE_URL,
 	RATE_LIMIT_MAX,
-	GRAPHQL_DEPTH_LIMIT,
 	TYPEORM,
 	STATIC,
-	MLAB_USER,
-	MLAB_PASS,
-	MLAB_HOST,
-	MLAB_PORT,
-	MLAB_DATABASE,
-	MLAB_URL,
-	MONGO_URL,
 	MONGO_PORT,
+	MONGO_HOST,
 	MONGO_DB,
-	ISSUER,
+	MONGO_PASS,
+	MONGO_USER,
 	AUDIENCE,
-	ACCESS_TOKEN,
+	ISSUER,
 	ACCESS_TOKEN_SECRET,
-	REFRESH_TOKEN,
 	REFRESH_TOKEN_SECRET,
-	RESETPASS_TOKEN,
 	RESETPASS_TOKEN_SECRET,
-	EMAIL_TOKEN,
 	EMAIL_TOKEN_SECRET,
 	BCRYPT_SALT,
 	NODEMAILER_USER,
 	NODEMAILER_PASS,
-	CLOUDINARY_NAME,
-	CLOUDINARY_API_KEY,
-	CLOUDINARY_API_SECRET,
-	USER_SUBSCRIPTION,
-	NOTIFICATION_SUBSCRIPTION,
-	MESSAGES_SUBSCRIPTION,
 	GOOGLE_CLIENT_ID,
 	GOOGLE_CLIENT_SECRET,
-	GOOGLE_CALLBACK_URL,
 	FACEBOOK_APP_ID,
-	FACEBOOK_APP_SECRET,
-	FACEBOOK_CALLBACK_URL,
-	GOOGLE_APPLICATION_CREDENTIALS,
-	STRIPE_PUBLIC_KEY,
-	STRIPE_SECRET_KEY,
-	STRIPE_PLAN
+	FACEBOOK_APP_SECRET
 }

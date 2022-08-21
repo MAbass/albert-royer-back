@@ -27,17 +27,26 @@
       "@config": [
         "src/config"
       ],
+      "@config-env": [
+        "src/config/envs/config.environment"
+      ],
       "@environments": [
         "src/environments"
-      ],
-      "@generator": [
-        "src/generator/graphql.schema"
       ],
       "@entities": [
         "src/entities"
       ],
       "@shared": [
         "src/shared"
+      ],
+      "@controllers": [
+        "src/controllers"
+      ],
+      "@modules": [
+        "src/controllers"
+      ],
+      "@services": [
+        "src/services"
       ],
       "@utils": [
         "src/utils"

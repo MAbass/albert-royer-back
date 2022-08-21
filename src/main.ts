@@ -1,17 +1,26 @@
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from './app.module'
-import { Logger } from '@nestjs/common'
+import { AppModule } from './modules/app.module'
+import { Logger, ValidationPipe } from '@nestjs/common'
 import * as chalk from 'chalk'
 import { getConnection } from 'typeorm'
-import { express as voyagerMiddleware } from 'graphql-voyager/middleware'
 import * as compression from 'compression'
 import * as helmet from 'helmet'
 import * as bodyParser from 'body-parser'
 import * as rateLimit from 'express-rate-limit'
-import { DOMAIN, END_POINT, NODE_ENV, PORT, PRIMARY_COLOR, RATE_LIMIT_MAX, VOYAGER } from '@environments'
+import {
+	DOMAIN,
+	END_POINT,
+	NODE_ENV,
+	PORT,
+	PRIMARY_COLOR,
+	RATE_LIMIT_MAX
+} from '@environments'
 import { MyLogger } from '@config'
-import { LoggerMiddleware, LoggingInterceptor, TimeoutInterceptor, ValidationPipe } from '@common'
-import '@validations'
+import {
+	LoggerMiddleware,
+	LoggingInterceptor,
+	TimeoutInterceptor
+} from '@common'
 
 declare const module: any
 
@@ -20,11 +29,12 @@ async function bootstrap() {
 		const app = await NestFactory.create(AppModule, {
 			logger: new MyLogger()
 		})
+		app.setGlobalPrefix('/api/v1')
 
 		// NOTE: database connect
 		const connection = getConnection('default')
 		const { isConnected } = connection
-		// connection.runMigrations();
+		await connection.runMigrations()
 		isConnected
 			? Logger.log(`🌨️  Database connected`, 'TypeORM', false)
 			: Logger.error(`❌  Database connect error`, '', 'TypeORM', false)
@@ -61,19 +71,6 @@ async function bootstrap() {
 		// NOTE:loggerMiddleware
 		NODE_ENV !== 'testing' && app.use(LoggerMiddleware)
 
-		// NOTE: voyager
-		NODE_ENV !== 'production' &&
-		app.use(
-			`/${VOYAGER}`,
-			voyagerMiddleware({
-				displayOptions: {
-					skipRelay: false,
-					skipDeprecated: false
-				},
-				endpointUrl: `/${END_POINT}`
-			})
-		)
-
 		// NOTE: interceptors
 		app.useGlobalInterceptors(new LoggingInterceptor())
 		app.useGlobalInterceptors(new TimeoutInterceptor())
@@ -92,31 +89,31 @@ async function bootstrap() {
 
 		NODE_ENV !== 'production'
 			? (Logger.log(
-				`🤬  Application is running on: ${await app.getUrl()}`,
-				'NestJS',
-				false
-			),
-				Logger.log(
+					`🤬  Application is running on: ${await app.getUrl()}`,
+					'NestJS',
+					false
+			  ),
+			  Logger.log(
 					`🚀  Server ready at http://${DOMAIN}:${chalk
 						.hex(PRIMARY_COLOR)
 						.bold(PORT.toString())}/${END_POINT}`,
 					'Bootstrap',
 					false
-				),
-				Logger.log(
+			  ),
+			  Logger.log(
 					`🚀  Subscriptions ready at ws://${DOMAIN}:${chalk
 						.hex(PRIMARY_COLOR)
 						.bold(PORT.toString())}/${END_POINT}`,
 					'Bootstrap',
 					false
-				))
+			  ))
 			: Logger.log(
-				`🚀  Server is listening on port ${chalk
-					.hex(PRIMARY_COLOR)
-					.bold(PORT.toString())}`,
-				'Bootstrap',
-				false
-			)
+					`🚀  Server is listening on port ${chalk
+						.hex(PRIMARY_COLOR)
+						.bold(PORT.toString())}`,
+					'Bootstrap',
+					false
+			  )
 	} catch (error) {
 		Logger.error(`❌  Error starting server, ${error}`, '', 'Bootstrap', false)
 		process.exit()
