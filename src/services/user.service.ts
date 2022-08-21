@@ -1,8 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { AddUserDTO } from '@validations'
-import { User } from '@entities'
+import { Role, User } from '@entities'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MongoRepository } from 'typeorm'
+import { RoleService } from './role.service'
 
 @Injectable()
 export class UserService {
@@ -10,18 +11,23 @@ export class UserService {
 
 	constructor(
 		@InjectRepository(User)
-		private readonly userRepository: MongoRepository<User>
+		private readonly userRepository: MongoRepository<User>,
+		@Inject(RoleService)
+		private readonly roleService: RoleService
 	) {}
-
-	getHello(): string {
-		return 'Hello World!'
-	}
 
 	async addUser(user: AddUserDTO): Promise<User> {
 		const userSaved: User = new User()
-		userSaved.firstname = user.firstname
-		userSaved.lastname = user.lastname
-		userSaved.email = user.email
-		return this.userRepository.save(user)
+		userSaved.username = user.username
+		userSaved.password = user.password
+		userSaved.phone = user.phone
+
+		const role: Role = await this.roleService.getRoleByName(user.role)
+
+		if (!role) {
+			throw new NotFoundException(`The role of name ${user.role} is not found`)
+		}
+		userSaved.role = role.name
+		return this.userRepository.save(userSaved)
 	}
 }

@@ -29,12 +29,12 @@ async function bootstrap() {
 		const app = await NestFactory.create(AppModule, {
 			logger: new MyLogger()
 		})
-		app.setGlobalPrefix('/api/v1')
+		app.setGlobalPrefix(END_POINT)
 
 		// NOTE: database connect
 		const connection = getConnection('default')
 		const { isConnected } = connection
-		await connection.runMigrations()
+		// await connection.runMigrations()
 		isConnected
 			? Logger.log(`🌨️  Database connected`, 'TypeORM', false)
 			: Logger.error(`❌  Database connect error`, '', 'TypeORM', false)
@@ -95,13 +95,6 @@ async function bootstrap() {
 			  ),
 			  Logger.log(
 					`🚀  Server ready at http://${DOMAIN}:${chalk
-						.hex(PRIMARY_COLOR)
-						.bold(PORT.toString())}/${END_POINT}`,
-					'Bootstrap',
-					false
-			  ),
-			  Logger.log(
-					`🚀  Subscriptions ready at ws://${DOMAIN}:${chalk
 						.hex(PRIMARY_COLOR)
 						.bold(PORT.toString())}/${END_POINT}`,
 					'Bootstrap',

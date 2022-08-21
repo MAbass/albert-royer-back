@@ -24,7 +24,7 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
 			// password: MONGO_PASS,
 			// entities: getMetadataArgsStorage().tables.map(tbl => tbl.target),
 			entities: ['../../entities/*.entity.ts'],
-			synchronize: true,
+			synchronize: false,
 			autoLoadEntities: true,
 			useNewUrlParser: true,
 			useUnifiedTopology: true,

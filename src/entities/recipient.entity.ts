@@ -2,33 +2,23 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
-	JoinColumn,
 	ObjectIdColumn,
-	OneToOne,
 	UpdateDateColumn
 } from 'typeorm'
-import { Role } from './role.entity'
 
-@Entity({ name: 'users' })
-export class User {
+@Entity({ name: 'recipients' })
+export class Recipient {
 	@ObjectIdColumn()
 	_id: string
 
 	@Column()
-	username: string
+	firstname: string
 
 	@Column()
-	password: string
+	lastname: string
 
 	@Column()
-	phone: string
-
-	@OneToOne(
-		() => Role,
-		role => role._id
-	)
-	@JoinColumn()
-	role: string
+	email: string
 
 	@CreateDateColumn()
 	createdAt: Date
