@@ -1,12 +1,15 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { UserService } from '@services'
 import { UserController } from '@controllers'
-import { RoleModule } from './role.module'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { User } from '@entities'
+import { User, UserSchema } from '@entities'
+import { MongooseModule } from '@nestjs/mongoose'
+import { RoleModule } from '@modules'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([User]), RoleModule],
+	imports: [
+		MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+		forwardRef(() => RoleModule)
+	],
 	providers: [UserService],
 	controllers: [UserController]
 })

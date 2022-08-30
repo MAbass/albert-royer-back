@@ -1,8 +1,7 @@
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from './modules/app.module'
+import { AppModule } from '@modules'
 import { Logger, ValidationPipe } from '@nestjs/common'
 import * as chalk from 'chalk'
-import { getConnection } from 'typeorm'
 import * as compression from 'compression'
 import * as helmet from 'helmet'
 import * as bodyParser from 'body-parser'
@@ -32,12 +31,12 @@ async function bootstrap() {
 		app.setGlobalPrefix(END_POINT)
 
 		// NOTE: database connect
-		const connection = getConnection('default')
-		const { isConnected } = connection
-		// await connection.runMigrations()
-		isConnected
-			? Logger.log(`🌨️  Database connected`, 'TypeORM', false)
-			: Logger.error(`❌  Database connect error`, '', 'TypeORM', false)
+		// const connection = getConnection('mongodb')
+		// const { isConnected } = connection
+		// // await connection.runMigrations()
+		// isConnected
+		// 	? Logger.log(`🌨️  Database connected`, 'TypeORM', false)
+		// 	: Logger.error(`❌  Database connect error`, '', 'TypeORM', false)
 
 		// NOTE: adapter for e2e testing
 		app.getHttpAdapter()

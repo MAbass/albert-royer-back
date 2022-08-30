@@ -43,7 +43,7 @@
         "src/controllers"
       ],
       "@modules": [
-        "src/controllers"
+        "src/modules"
       ],
       "@services": [
         "src/services"

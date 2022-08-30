@@ -1,20 +1,17 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common'
-import { Role } from '@entities'
-import { InjectRepository } from '@nestjs/typeorm'
-import { MongoRepository } from 'typeorm'
+import { Role, RoleDocument } from '@entities'
 import { AddRoleDTO } from '@validations'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 
 @Injectable()
 export class RoleService {
 	private readonly logger: Logger = new Logger(RoleService.name)
 
-	constructor(
-		@InjectRepository(Role)
-		private readonly roleRepository: MongoRepository<Role>
-	) {}
+	constructor(@InjectModel(Role.name) private roleModel: Model<RoleDocument>) {}
 
 	async addRole(role: AddRoleDTO): Promise<Role> {
-		const roleSearch: Role = await this.roleRepository.findOne({
+		const roleSearch: Role = await this.roleModel.findOne({
 			name: role.name
 		})
 
@@ -24,10 +21,12 @@ export class RoleService {
 		const roleToSave: Role = new Role()
 		roleToSave.name = role.name
 
-		return this.roleRepository.save(roleToSave)
+		const roleSaved = new this.roleModel(roleToSave)
+
+		return roleSaved.save()
 	}
 
 	async getRoleByName(name: string) {
-		return this.roleRepository.findOne({ name })
+		return this.roleModel.findOne({ name })
 	}
 }

@@ -1,21 +1,20 @@
-import { CacheModule, Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { CacheModule, forwardRef, Module } from '@nestjs/common'
 import { ScheduleModule } from '@nestjs/schedule'
-import { CacheService, TypeOrmService } from '@config'
-import { UserModule } from './user.module'
-import { RoleModule } from './role.module'
+import { CacheService, MongooseConfigService } from '@config'
+import { RoleModule, UserModule } from '@modules'
+import { MongooseModule } from '@nestjs/mongoose'
 
 @Module({
 	imports: [
-		TypeOrmModule.forRootAsync({
-			useClass: TypeOrmService
+		forwardRef(() => RoleModule),
+		forwardRef(() => UserModule),
+		MongooseModule.forRootAsync({
+			useClass: MongooseConfigService
 		}),
 		CacheModule.registerAsync({
 			useClass: CacheService
 		}),
-		ScheduleModule.forRoot(),
-		UserModule,
-		RoleModule
+		ScheduleModule.forRoot()
 	]
 })
 export class AppModule {}

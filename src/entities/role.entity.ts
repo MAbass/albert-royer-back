@@ -1,22 +1,14 @@
-import {
-	Column,
-	CreateDateColumn,
-	Entity,
-	ObjectIdColumn,
-	UpdateDateColumn
-} from 'typeorm'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document } from 'mongoose'
 
-@Entity({ name: 'roles' })
+export type RoleDocument = Role & Document
+
+@Schema({ timestamps: true })
 export class Role {
-	@ObjectIdColumn()
 	_id: string
 
-	@Column()
+	@Prop()
 	name: string
-
-	@CreateDateColumn()
-	createdAt: Date
-
-	@UpdateDateColumn()
-	updatedAt: Date
 }
+
+export const RoleSchema = SchemaFactory.createForClass(Role)

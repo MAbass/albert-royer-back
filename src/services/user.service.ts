@@ -1,17 +1,16 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { AddUserDTO } from '@validations'
-import { Role, User } from '@entities'
-import { InjectRepository } from '@nestjs/typeorm'
-import { MongoRepository } from 'typeorm'
+import { Role, User, UserDocument } from '@entities'
 import { RoleService } from './role.service'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 
 @Injectable()
 export class UserService {
 	private readonly logger: Logger = new Logger(UserService.name)
 
 	constructor(
-		@InjectRepository(User)
-		private readonly userRepository: MongoRepository<User>,
+		@InjectModel(User.name) private userModel: Model<UserDocument>,
 		@Inject(RoleService)
 		private readonly roleService: RoleService
 	) {}
@@ -27,7 +26,8 @@ export class UserService {
 		if (!role) {
 			throw new NotFoundException(`The role of name ${user.role} is not found`)
 		}
-		userSaved.role = role.name
-		return this.userRepository.save(userSaved)
+		userSaved.role = role
+		const createdUser = new this.userModel(userSaved)
+		return createdUser.save()
 	}
 }

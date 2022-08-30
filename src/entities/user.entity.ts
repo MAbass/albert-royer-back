@@ -1,38 +1,25 @@
-import {
-	Column,
-	CreateDateColumn,
-	Entity,
-	JoinColumn,
-	ObjectIdColumn,
-	OneToOne,
-	UpdateDateColumn
-} from 'typeorm'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import * as mongoose from 'mongoose'
+import { Document } from 'mongoose'
 import { Role } from './role.entity'
 
-@Entity({ name: 'users' })
+export type UserDocument = User & Document
+
+@Schema({ timestamps: true })
 export class User {
-	@ObjectIdColumn()
 	_id: string
 
-	@Column()
+	@Prop()
 	username: string
 
-	@Column()
+	@Prop()
 	password: string
 
-	@Column()
+	@Prop()
 	phone: string
 
-	@OneToOne(
-		() => Role,
-		role => role._id
-	)
-	@JoinColumn()
-	role: string
-
-	@CreateDateColumn()
-	createdAt: Date
-
-	@UpdateDateColumn()
-	updatedAt: Date
+	@Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Role' })
+	role: Role
 }
+
+export const UserSchema = SchemaFactory.createForClass(User)
