@@ -1,5 +1,4 @@
 import { sign, verify } from 'jsonwebtoken'
-import { getMongoRepository } from 'typeorm'
 
 import {
 	ACCESS_TOKEN_SECRET,
@@ -94,20 +93,20 @@ export const verifyToken = async (
 	token: string,
 	type: TokenType
 ): Promise<User> => {
-	let currentUser
+	// let currentUser
 
-	await verify(token, common[type].privateKey, async (err, data) => {
+	/*await verify(token, common[type].privateKey, async (err, data) => {
 		if (err) {
-			/*throw new AuthenticationError(
+			/!*throw new AuthenticationError(
 				'Authentication token is invalid, please try again.'
-			)*/
+			)*!/
 		}
 		currentUser = await getMongoRepository(User).findOne({
 			_id: data._id
 		})
-	})
+	})*/
 
-	if (type === 'emailToken') {
+	/*if (type === 'emailToken') {
 		return currentUser
 	}
 
@@ -115,9 +114,10 @@ export const verifyToken = async (
 
 	if (currentUser && !currentUser.isVerified) {
 		throw new ForbiddenException('Please verify your email.')
-	}
+	}*/
 
-	return currentUser
+	// return currentUser
+	return null
 }
 
 /**

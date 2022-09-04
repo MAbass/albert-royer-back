@@ -1,6 +1,12 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common'
-import { AddUserDTO } from '@validations'
-import { Role, User, UserDocument } from '@entities'
+import { AddUserAndRecipientDTO, AddUserDTO } from '@validations'
+import {
+	Recipient,
+	RecipientDocument,
+	Role,
+	User,
+	UserDocument
+} from '@entities'
 import { RoleService } from './role.service'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -11,6 +17,8 @@ export class UserService {
 
 	constructor(
 		@InjectModel(User.name) private userModel: Model<UserDocument>,
+		@InjectModel(Recipient.name)
+		private recipientModel: Model<RecipientDocument>,
 		@Inject(RoleService)
 		private readonly roleService: RoleService
 	) {}
@@ -29,5 +37,15 @@ export class UserService {
 		userSaved.role = role
 		const createdUser = new this.userModel(userSaved)
 		return createdUser.save()
+	}
+
+	async addUserAndRecipient(userRecipient: AddUserAndRecipientDTO) {
+		const userSaved = await this.addUser(userRecipient)
+		const recipientToSave = new Recipient()
+		recipientToSave.firstname = userRecipient.firstname
+		recipientToSave.lastname = userRecipient.lastname
+		recipientToSave.user = userSaved
+		const recipientSaved = new this.recipientModel(recipientToSave)
+		return recipientSaved.save()
 	}
 }

@@ -16,9 +16,12 @@ import {
 } from '@environments'
 import { MyLogger } from '@config'
 import {
+	ErrorsInterceptor,
+	HttpExceptionFilter,
 	LoggerMiddleware,
 	LoggingInterceptor,
-	TimeoutInterceptor
+	TimeoutInterceptor,
+	TransformInterceptor
 } from '@common'
 
 declare const module: any
@@ -70,8 +73,13 @@ async function bootstrap() {
 		// NOTE:loggerMiddleware
 		NODE_ENV !== 'testing' && app.use(LoggerMiddleware)
 
+		// NOTE: filters
+		app.useGlobalFilters(new HttpExceptionFilter())
+
 		// NOTE: interceptors
 		app.useGlobalInterceptors(new LoggingInterceptor())
+		app.useGlobalInterceptors(new TransformInterceptor())
+		app.useGlobalInterceptors(new ErrorsInterceptor())
 		app.useGlobalInterceptors(new TimeoutInterceptor())
 
 		// NOTE: global nest setup
