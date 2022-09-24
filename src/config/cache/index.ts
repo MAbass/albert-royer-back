@@ -1,15 +1,15 @@
 import {
-	CacheModuleOptions,
-	CacheOptionsFactory,
-	Injectable
-} from '@nestjs/common'
+  CacheModuleOptions,
+  CacheOptionsFactory,
+  Injectable
+} from "@nestjs/common";
 
 @Injectable()
 export class CacheService implements CacheOptionsFactory {
-	createCacheOptions(): CacheModuleOptions {
-		return {
-			ttl: 5, // seconds
-			max: 10 // maximum number of items in cache
-		}
-	}
+  createCacheOptions(): CacheModuleOptions {
+    return {
+      ttl: 5, // seconds
+      max: 10 // maximum number of items in cache
+    };
+  }
 }

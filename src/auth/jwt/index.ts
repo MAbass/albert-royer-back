@@ -1,48 +1,47 @@
-import { sign, verify } from 'jsonwebtoken'
+import { sign } from "jsonwebtoken";
 
 import {
-	ACCESS_TOKEN_SECRET,
-	AUDIENCE,
-	EMAIL_TOKEN_SECRET,
-	ISSUER,
-	REFRESH_TOKEN_SECRET,
-	RESETPASS_TOKEN_SECRET
-} from '@environments'
-import { User } from '@entities'
-import { ForbiddenException } from '@nestjs/common'
+  ACCESS_TOKEN_SECRET,
+  AUDIENCE,
+  EMAIL_TOKEN_SECRET,
+  ISSUER,
+  REFRESH_TOKEN_SECRET,
+  RESETPASS_TOKEN_SECRET
+} from "@environments";
+import { User } from "@entities";
 
 type TokenType =
-	| 'accessToken'
-	| 'refreshToken'
-	| 'emailToken'
-	| 'resetPassToken'
+  | "accessToken"
+  | "refreshToken"
+  | "emailToken"
+  | "resetPassToken";
 
 const common = {
-	accessToken: {
-		privateKey: ACCESS_TOKEN_SECRET,
-		signOptions: {
-			expiresIn: '30d' // 15m
-		}
-	},
-	refreshToken: {
-		privateKey: REFRESH_TOKEN_SECRET,
-		signOptions: {
-			expiresIn: '7d' // 7d
-		}
-	},
-	emailToken: {
-		privateKey: EMAIL_TOKEN_SECRET,
-		signOptions: {
-			expiresIn: '1d' // 1d
-		}
-	},
-	resetPassToken: {
-		privateKey: RESETPASS_TOKEN_SECRET,
-		signOptions: {
-			expiresIn: '1d' // 1d
-		}
-	}
-}
+  accessToken: {
+    privateKey: ACCESS_TOKEN_SECRET,
+    signOptions: {
+      expiresIn: "30d" // 15m
+    }
+  },
+  refreshToken: {
+    privateKey: REFRESH_TOKEN_SECRET,
+    signOptions: {
+      expiresIn: "7d" // 7d
+    }
+  },
+  emailToken: {
+    privateKey: EMAIL_TOKEN_SECRET,
+    signOptions: {
+      expiresIn: "1d" // 1d
+    }
+  },
+  resetPassToken: {
+    privateKey: RESETPASS_TOKEN_SECRET,
+    signOptions: {
+      expiresIn: "1d" // 1d
+    }
+  }
+};
 
 /**
  * Returns token.
@@ -58,23 +57,23 @@ const common = {
  * @beta
  */
 export const generateToken = async (
-	user: User,
-	type: TokenType
+  user: User,
+  type: TokenType
 ): Promise<string> => {
-	return await sign(
-		{
-			_id: user._id
-		},
-		common[type].privateKey,
-		{
-			issuer: ISSUER,
-			subject: 'user.local',
-			audience: AUDIENCE,
-			algorithm: 'HS256',
-			expiresIn: common[type].signOptions.expiresIn // 15m
-		}
-	)
-}
+  return await sign(
+    {
+      _id: user._id
+    },
+    common[type].privateKey,
+    {
+      issuer: ISSUER,
+      subject: "user.local",
+      audience: AUDIENCE,
+      algorithm: "HS256",
+      expiresIn: common[type].signOptions.expiresIn // 15m
+    }
+  );
+};
 
 /**
  * Returns user by verify token.
@@ -90,12 +89,12 @@ export const generateToken = async (
  * @beta
  */
 export const verifyToken = async (
-	token: string,
-	type: TokenType
+  token: string,
+  type: TokenType
 ): Promise<User> => {
-	// let currentUser
+  // let currentUser
 
-	/*await verify(token, common[type].privateKey, async (err, data) => {
+  /*await verify(token, common[type].privateKey, async (err, data) => {
 		if (err) {
 			/!*throw new AuthenticationError(
 				'Authentication token is invalid, please try again.'
@@ -106,7 +105,7 @@ export const verifyToken = async (
 		})
 	})*/
 
-	/*if (type === 'emailToken') {
+  /*if (type === 'emailToken') {
 		return currentUser
 	}
 
@@ -116,9 +115,9 @@ export const verifyToken = async (
 		throw new ForbiddenException('Please verify your email.')
 	}*/
 
-	// return currentUser
-	return null
-}
+  // return currentUser
+  return null;
+};
 
 /**
  * Returns login response by trade token.
@@ -133,7 +132,7 @@ export const verifyToken = async (
  * @beta
  */
 export const tradeToken = async (user: User) => {
-	/*	if (!user.isVerified) {
+  /*	if (!user.isVerified) {
 			throw new ForbiddenException('Please verify your email.')
 		}
 
@@ -145,8 +144,8 @@ export const tradeToken = async (user: User) => {
 			throw new ForbiddenException('Your email has been locked.')
 		}*/
 
-	const accessToken = await generateToken(user, 'accessToken')
-	const refreshToken = await generateToken(user, 'refreshToken')
+  const accessToken = await generateToken(user, "accessToken");
+  const refreshToken = await generateToken(user, "refreshToken");
 
-	return { accessToken, refreshToken }
-}
+  return { accessToken, refreshToken };
+};

@@ -4,6 +4,7 @@ uploads
 photos
 data
 backup
+src/assets
 
 # Dependency directories
 node_modules/

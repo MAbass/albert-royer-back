@@ -13,16 +13,15 @@
     "incremental": true,
     "noLib": false,
     "noImplicitAny": false,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ],
     "paths": {
       "@auth": [
         "src/auth"
       ],
       "@common": [
         "src/common"
+      ],
+      "@assets": [
+        "src/assets"
       ],
       "@config": [
         "src/config"
@@ -56,18 +55,5 @@
       ]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/services/reviews/index.js",
-    "test"
-  ],
   "compileOnSave": false,
-  "exclude": [
-    "node_modules",
-    "coverage",
-    "document",
-    "dist",
-    "backup",
-    "**/*.spec.ts"
-  ]
 }

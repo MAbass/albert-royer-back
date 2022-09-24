@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable } from "@nestjs/common";
 // import { getMetadataArgsStorage } from 'typeorm'
 import {
-	MONGO_DB,
-	MONGO_HOST,
-	MONGO_PASS,
-	MONGO_PORT,
-	MONGO_USER,
-	TYPEORM
-} from '@environments'
-import { MyLogger } from '../logger'
-import { MongooseModuleOptions, MongooseOptionsFactory } from '@nestjs/mongoose'
+  MONGO_DB,
+  MONGO_HOST,
+  MONGO_PASS,
+  MONGO_PORT,
+  MONGO_USER,
+  TYPEORM
+} from "@environments";
+import { MyLogger } from "../logger";
+import {
+  MongooseModuleOptions,
+  MongooseOptionsFactory
+} from "@nestjs/mongoose";
 
 /*@Injectable()
 export class TypeOrmService implements TypeOrmOptionsFactory {
@@ -43,14 +46,14 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
 }*/
 @Injectable()
 export class MongooseConfigService implements MongooseOptionsFactory {
-	private readonly logger: MyLogger = new MyLogger(MongooseConfigService.name)
+  private readonly logger: MyLogger = new MyLogger(MongooseConfigService.name);
 
-	createMongooseOptions(): MongooseModuleOptions {
-		this.logger.debug(
-			`--------------TYPEORM: ${JSON.stringify(TYPEORM)}-------------------`
-		)
-		return {
-			uri: `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`
-		}
-	}
+  createMongooseOptions(): MongooseModuleOptions {
+    this.logger.debug(
+      `--------------TYPEORM: ${JSON.stringify(TYPEORM)}-------------------`
+    );
+    return {
+      uri: `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`
+    };
+  }
 }
