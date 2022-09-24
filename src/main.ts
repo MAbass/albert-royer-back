@@ -81,10 +81,12 @@ async function bootstrap() {
 
     await app.listen(PORT);
 
+    /*
     if (module.hot) {
       module.hot.accept();
       module.hot.dispose(() => app.close());
     }
+*/
     NODE_ENV !== "production"
       ? (Logger.log(
           `🤬  Application is running on: ${await app.getUrl()}`,

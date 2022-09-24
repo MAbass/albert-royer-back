@@ -1,21 +1,21 @@
-import mongoose, { Document } from 'mongoose'
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { User } from './user.entity'
+import mongoose, { Document } from "mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { User } from "./user.entity";
 
-export type RecipientDocument = Recipient & Document
+export type RecipientDocument = Recipient & Document;
 
 @Schema({ timestamps: true })
 export class Recipient {
-	_id: string
+  _id: string;
 
-	@Prop()
-	firstname: string
+  @Prop()
+  firstname: string;
 
-	@Prop()
-	lastname: string
+  @Prop()
+  lastname: string;
 
-	@Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-	user: User
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "User" })
+  user: User;
 }
 
-export const RecipientSchema = SchemaFactory.createForClass(Recipient)
+export const RecipientSchema = SchemaFactory.createForClass(Recipient);

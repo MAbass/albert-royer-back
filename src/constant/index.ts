@@ -1,3 +1,3 @@
-const USER_ADDED = 'USER_ADDED'
+const USER_ADDED = "USER_ADDED";
 
-export { USER_ADDED }
+export { USER_ADDED };

@@ -1,5 +1,5 @@
-import { CronJob } from 'cron'
-import { Logger } from '@nestjs/common'
+import { CronJob } from "cron";
+import { Logger } from "@nestjs/common";
 
 /**
  * Returns any.
@@ -12,11 +12,11 @@ import { Logger } from '@nestjs/common'
  * @beta
  */
 export const timeout = () => {
-	const taskID = setTimeout(() => {
-		Logger.debug('Task completed', 'Timeout', false)
-	}, 1000)
-	clearTimeout(taskID)
-}
+  const taskID = setTimeout(() => {
+    Logger.debug("Task completed", "Timeout", false);
+  }, 1000);
+  clearTimeout(taskID);
+};
 
 /**
  * Returns any.
@@ -29,11 +29,11 @@ export const timeout = () => {
  * @beta
  */
 export const interval = () => {
-	const intervalID = setInterval(() => {
-		Logger.debug('Task executed', 'Interval', false)
-	}, 2000)
-	clearInterval(intervalID)
-}
+  const intervalID = setInterval(() => {
+    Logger.debug("Task executed", "Interval", false);
+  }, 2000);
+  clearInterval(intervalID);
+};
 
 /**
  * Returns any.
@@ -46,13 +46,13 @@ export const interval = () => {
  * @beta
  */
 export const cron = () => {
-	const job = new CronJob({
-		cronTime: '0 0 12 * * MON-FRI',
-		onTick: () => {
-			Logger.debug('Cron job completed', 'Cron', false)
-		},
-		start: false,
-		timeZone: 'Asia/Ho_Chi_Minh'
-	})
-	job.start()
-}
+  const job = new CronJob({
+    cronTime: "0 0 12 * * MON-FRI",
+    onTick: () => {
+      Logger.debug("Cron job completed", "Cron", false);
+    },
+    start: false,
+    timeZone: "Asia/Ho_Chi_Minh"
+  });
+  job.start();
+};
