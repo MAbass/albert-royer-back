@@ -23,6 +23,7 @@ import {
   TimeoutInterceptor,
   TransformInterceptor
 } from "@common";
+
 declare const module: any;
 
 async function bootstrap() {
@@ -40,6 +41,8 @@ async function bootstrap() {
 
     // NOTE: added security
     app.use(helmet());
+
+    app.enableCors();
 
     // NOTE: body parser
     app.use(bodyParser.json({ limit: "50mb" }));
@@ -82,10 +85,10 @@ async function bootstrap() {
     await app.listen(PORT);
 
     /*
-    if (module.hot) {
-      module.hot.accept();
-      module.hot.dispose(() => app.close());
-    }
+		if (module.hot) {
+			module.hot.accept();
+			module.hot.dispose(() => app.close());
+		}
 */
     NODE_ENV !== "production"
       ? (Logger.log(

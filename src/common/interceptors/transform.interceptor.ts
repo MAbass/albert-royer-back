@@ -18,6 +18,18 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler
   ): Observable<Response<T>> {
-    return next.handle().pipe(map(data => ({ data })));
+    return next.handle().pipe(
+      map(data => {
+        const ctx = context.switchToHttp();
+        const response = ctx.getResponse();
+        const request = ctx.getRequest();
+        return {
+          statusCode: response.statusCode,
+          message: data,
+          timestamp: new Date().toISOString(),
+          path: request.url
+        };
+      })
+    );
   }
 }

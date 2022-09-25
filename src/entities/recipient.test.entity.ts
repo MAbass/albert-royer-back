@@ -1,6 +1,6 @@
 import mongoose, { Document } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Test } from "./test.entity";
+import { SubTest } from "./subtest.entity";
 
 export type RecipientTestDocument = RecipientTest & Document;
 
@@ -16,7 +16,7 @@ export class RecipientTest {
   recipient: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Subtest" })
-  subtest: Test;
+  subtest: SubTest;
 }
 
 export const RecipientTestSchema = SchemaFactory.createForClass(RecipientTest);

@@ -16,9 +16,6 @@ export class Quiz {
   @Prop()
   text: string;
 
-  @Prop()
-  image: string;
-
   @Prop({ type: "object" })
   data;
 

@@ -1,8 +1,10 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import { SubTest, SubTestDocument } from "@entities";
 import { SubTestAddDTO } from "@validations";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { QuizService } from "./quiz.service";
+import { SubtestModel } from "@models";
 
 @Injectable()
 export class SubtestService {
@@ -10,13 +12,36 @@ export class SubtestService {
 
   constructor(
     @InjectModel(SubTest.name)
-    private subTestDocumentModel: Model<SubTestDocument>
+    private subTestModel: Model<SubTestDocument>,
+    @Inject(QuizService)
+    private readonly quizService: QuizService
   ) {}
 
   async addSubtest(subTestDTO: SubTestAddDTO): Promise<SubTest> {
     const subTest: SubTest = new SubTest();
     subTest.name = subTestDTO.name;
-    const subTestSaved = new this.subTestDocumentModel(subTest);
-    return subTestSaved.save();
+    return new this.subTestModel(subTest).save();
+  }
+
+  async getAll() {
+    const subTests: Array<SubTest> = await this.subTestModel.find();
+    for (const subTest of subTests) {
+      subTest.quiz = await this.quizService.getQuizzes(
+        subTest.quiz.map(id => id.toString())
+      );
+    }
+    return subTests.map(subtest => {
+      const subtestModel = new SubtestModel(subtest);
+      return subtestModel.getResource();
+    });
+  }
+
+  async getByName(name: string) {
+    const subTest: SubTest = await this.subTestModel.findOne({ name });
+    subTest.quiz = await this.quizService.getQuizzes(
+      subTest.quiz.map(id => id.toString())
+    );
+    const subTestModel: SubtestModel = new SubtestModel(subTest);
+    return subTestModel.getResource();
   }
 }

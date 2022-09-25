@@ -17,6 +17,9 @@
       "@auth": [
         "src/auth"
       ],
+      "@models": [
+        "src/models"
+      ],
       "@common": [
         "src/common"
       ],

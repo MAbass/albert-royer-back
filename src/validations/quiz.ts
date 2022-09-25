@@ -14,7 +14,9 @@ export class AddQuizDTO {
   @IsNotEmpty()
   public data;
 
-  public image: string;
+  @IsNotEmpty()
+  @IsString()
+  public subTestName;
 
   @IsNumber()
   @IsNotEmpty()

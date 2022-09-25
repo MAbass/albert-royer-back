@@ -5,7 +5,7 @@ const environment = {
     MONGO_PASS: "abass",
     MONGO_HOST: "localhost",
     MONGO_PORT: 27017,
-    MONGO_DATABASE: "test",
+    MONGO_DATABASE: "albert-royer-dev",
     MAIL_USER: "test@gmail.com",
     MAIL_PASS: "test@2022"
   },
@@ -15,7 +15,7 @@ const environment = {
     MONGO_PASS: "abass",
     MONGO_HOST: "localhost",
     MONGO_PORT: 27017,
-    MONGO_DATABASE: "test",
+    MONGO_DATABASE: "albert-royer-prod",
     MAIL_USER: "test@gmail.com",
     MAIL_PASS: "test@2022"
   },
@@ -25,7 +25,7 @@ const environment = {
     MONGO_PASS: "abass",
     MONGO_HOST: "localhost",
     MONGO_PORT: 27017,
-    MONGO_DATABASE: "test",
+    MONGO_DATABASE: "albert-royer-dev",
     MAIL_USER: "test@gmail.com",
     MAIL_PASS: "test@2022"
   }
