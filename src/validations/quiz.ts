@@ -1,4 +1,12 @@
-import { IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
+import {
+  IsArray,
+  IsEmpty,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MinLength
+} from "class-validator";
 
 export class AddQuizDTO {
   @MinLength(3)
@@ -22,5 +30,7 @@ export class AddQuizDTO {
   @IsNotEmpty()
   public time: number;
 
-  listOfResponses: [];
+  @IsArray()
+  @IsOptional()
+  public listOfResponses;
 }

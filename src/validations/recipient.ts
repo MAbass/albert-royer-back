@@ -1,18 +1,27 @@
-import { IsNotEmpty, IsString, Length, MinLength } from "class-validator";
+import { IsMongoId, IsNotEmpty, IsObject, IsOptional } from "class-validator";
 
-export class AddRecipientDTO {
-  @MinLength(3)
-  @IsString()
-  @IsNotEmpty()
-  public firstname: string;
+class TestResponse {
+  @IsObject()
+  public firstQuiz: string;
+  @IsObject()
+  public secondQuiz: string;
+  @IsOptional()
+  @IsObject()
+  public thirdQuiz: string;
+  @IsOptional()
+  @IsObject()
+  public fourthQuiz: string;
+}
 
-  @MinLength(3)
-  @IsString()
+export class AddRecipientTest {
   @IsNotEmpty()
-  public lastname: string;
+  public data: TestResponse;
 
-  @Length(24)
-  @IsString()
+  @IsMongoId()
   @IsNotEmpty()
-  public user: string;
+  public recipient: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  public subtest: string;
 }

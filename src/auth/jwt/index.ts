@@ -1,20 +1,12 @@
 import { sign } from "jsonwebtoken";
 
-import {
-  ACCESS_TOKEN_SECRET,
-  AUDIENCE,
-  EMAIL_TOKEN_SECRET,
-  ISSUER,
-  REFRESH_TOKEN_SECRET,
-  RESETPASS_TOKEN_SECRET
-} from "@environments";
 import { User } from "@entities";
 
-type TokenType =
-  | "accessToken"
-  | "refreshToken"
-  | "emailToken"
-  | "resetPassToken";
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+const ISSUER = process.env.ISSUER;
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+
+type TokenType = "accessToken" | "refreshToken";
 
 const common = {
   accessToken: {
@@ -27,18 +19,6 @@ const common = {
     privateKey: REFRESH_TOKEN_SECRET,
     signOptions: {
       expiresIn: "7d" // 7d
-    }
-  },
-  emailToken: {
-    privateKey: EMAIL_TOKEN_SECRET,
-    signOptions: {
-      expiresIn: "1d" // 1d
-    }
-  },
-  resetPassToken: {
-    privateKey: RESETPASS_TOKEN_SECRET,
-    signOptions: {
-      expiresIn: "1d" // 1d
     }
   }
 };
@@ -60,7 +40,7 @@ export const generateToken = async (
   user: User,
   type: TokenType
 ): Promise<string> => {
-  return await sign(
+  return sign(
     {
       _id: user._id
     },
@@ -68,7 +48,6 @@ export const generateToken = async (
     {
       issuer: ISSUER,
       subject: "user.local",
-      audience: AUDIENCE,
       algorithm: "HS256",
       expiresIn: common[type].signOptions.expiresIn // 15m
     }
@@ -108,9 +87,7 @@ export const verifyToken = async (
   /*if (type === 'emailToken') {
 		return currentUser
 	}
-
 	// console.log(currentUser)
-
 	if (currentUser && !currentUser.isVerified) {
 		throw new ForbiddenException('Please verify your email.')
 	}*/
@@ -135,11 +112,9 @@ export const tradeToken = async (user: User) => {
   /*	if (!user.isVerified) {
 			throw new ForbiddenException('Please verify your email.')
 		}
-
 		if (!user.isActive) {
 			throw new ForbiddenException('User already doesn\'t exist.')
 		}
-
 		if (user.isLocked) {
 			throw new ForbiddenException('Your email has been locked.')
 		}*/

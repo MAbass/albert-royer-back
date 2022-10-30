@@ -20,7 +20,6 @@ export class RoleService {
     }
     const roleToSave: Role = new Role();
     roleToSave.name = role.name;
-
     const roleSaved = new this.roleModel(roleToSave);
 
     return roleSaved.save();

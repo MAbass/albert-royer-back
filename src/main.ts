@@ -6,14 +6,6 @@ import * as compression from "compression";
 import * as helmet from "helmet";
 import * as bodyParser from "body-parser";
 import * as rateLimit from "express-rate-limit";
-import {
-  DOMAIN,
-  END_POINT,
-  NODE_ENV,
-  PORT,
-  PRIMARY_COLOR,
-  RATE_LIMIT_MAX
-} from "@environments";
 import { MyLogger } from "@config";
 import {
   ErrorsInterceptor,
@@ -31,7 +23,10 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
       logger: new MyLogger()
     });
-    app.setGlobalPrefix(END_POINT);
+
+    const NODE_ENV = process.env.NODE_ENV;
+
+    app.setGlobalPrefix(process.env.DOMAIN);
 
     // NOTE: adapter for e2e testing
     app.getHttpAdapter();
@@ -58,7 +53,7 @@ async function bootstrap() {
     app.use(
       rateLimit({
         windowMs: 1000 * 60 * 60, // an hour
-        max: RATE_LIMIT_MAX, // limit each IP to 100 requests per windowMs
+        max: process.env.RATE_LIMIT_MAX, // limit each IP to 100 requests per windowMs
         message:
           "⚠️  Too many request created from this IP, please try again after an hour"
       })
@@ -82,7 +77,7 @@ async function bootstrap() {
     );
     app.enableShutdownHooks();
 
-    await app.listen(PORT);
+    await app.listen(process.env.PORT);
 
     /*
 		if (module.hot) {
@@ -97,16 +92,16 @@ async function bootstrap() {
           false
         ),
         Logger.log(
-          `🚀  Server ready at http://${DOMAIN}:${chalk
-            .hex(PRIMARY_COLOR)
-            .bold(PORT.toString())}/${END_POINT}`,
+          `🚀  Server ready at http://${process.env.END_POINT}:${chalk
+            .hex(process.env.PRIMARY_COLOR)
+            .bold(process.env.PORT.toString())}/${process.env.DOMAIN}`,
           "Bootstrap",
           false
         ))
       : Logger.log(
           `🚀  Server is listening on port ${chalk
-            .hex(PRIMARY_COLOR)
-            .bold(PORT.toString())}`,
+            .hex(process.env.PRIMARY_COLOR)
+            .bold(process.env.PORT.toString())}`,
           "Bootstrap",
           false
         );

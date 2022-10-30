@@ -1,7 +1,15 @@
-import environment from "./env.project";
-
-export class ConfigEnvironment {
-  static getEnvPath(key: string): string {
-    return environment[key];
-  }
-}
+export default () => ({
+  PORT: process.env.PORT,
+  MONGO_USER: process.env.MONGO_USER,
+  MONGO_PASS: process.env.MONGO_PASS,
+  MONGO_HOST: process.env.MONGO_HOST,
+  MONGO_PORT: process.env.MONGO_PORT,
+  MONGO_DATABASE: process.env.MONGO_DATABASE,
+  MAIL_USER: process.env.MAIL_USER,
+  MAIL_PASS: process.env.MAIL_PASS,
+  SECRET_KEY_PASSWORD: process.env.SECRET_KEY_PASSWORD,
+  SALTORROUNDS: process.env.SALTORROUNDS,
+  TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+  ACCESS_TOKEN_EXPIRE: process.env.ACCESS_TOKEN_EXPIRE,
+  REFRESH_TOKEN_EXPIRE: process.env.REFRESH_TOKEN_EXPIRE
+});

@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
 import { Document } from "mongoose";
 import { Role } from "./role.entity";
+import { SubTest } from "./subtest.entity";
 
 export type UserDocument = User & Document;
 
@@ -9,14 +10,20 @@ export type UserDocument = User & Document;
 export class User {
   _id: string;
 
-  @Prop({ unique: true })
-  username: string;
-
   @Prop()
+  name: string;
+
+  @Prop({ unique: true })
+  phone: string;
+
+  @Prop({ unique: true })
+  email: string;
+
+  @Prop({ unique: true })
   password: string;
 
-  @Prop()
-  phone: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "SubTest" })
+  subTestId: SubTest;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Role" })
   role: Role;

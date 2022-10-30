@@ -1,25 +1,17 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { AddUserAndRecipientDTO, AddUserDTO } from "@validations";
+import { AddUserDTO } from "@validations";
 import { UserService } from "@services";
-import { Recipient, User } from "@entities";
+import { User } from "@entities";
+import { UserModel } from "@models";
 
-@Controller()
+@Controller("/user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post("/user")
+  @Post("")
   async addUser(@Body() user: AddUserDTO): Promise<any> {
     const userSaved: User = await this.userService.addUser(user);
-    return userSaved;
-  }
-
-  @Post("/user-recipient")
-  async addUserAndRecipient(
-    @Body() userRecipient: AddUserAndRecipientDTO
-  ): Promise<any> {
-    const recipientSaved: Recipient = await this.userService.addUserAndRecipient(
-      userRecipient
-    );
-    return recipientSaved;
+    const userModel = new UserModel(userSaved);
+    return userModel.getResource();
   }
 }

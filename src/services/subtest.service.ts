@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { SubTest, SubTestDocument } from "@entities";
-import { SubTestAddDTO } from "@validations";
+import { SubTestAddDTO, TestResponse } from "@validations";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { QuizService } from "./quiz.service";
@@ -38,6 +38,50 @@ export class SubtestService {
 
   async getByName(name: string) {
     const subTest: SubTest = await this.subTestModel.findOne({ name });
+    subTest.quiz = await this.quizService.getQuizzes(
+      subTest.quiz.map(id => id.toString())
+    );
+    const subTestModel: SubtestModel = new SubtestModel(subTest);
+    return subTestModel.getResource();
+  }
+
+  async submitResponse(testResponse: TestResponse) {
+    let resultFirstQuiz: number = 0;
+    let resultSecondQuiz: number = 0;
+    const firstQuiz = testResponse.firstQuiz;
+    firstQuiz["data"].map(response => {
+      const givingResponse = response["question"].filter(
+        response => response.isActive === true
+      )[0];
+      if (givingResponse) {
+        resultFirstQuiz =
+          resultFirstQuiz + (givingResponse["sup"] - givingResponse["inf"]);
+      }
+    });
+    const secondQuiz = testResponse.secondQuiz;
+    const retrieveQuiz = await this.quizService.getQuiz(secondQuiz["id"]);
+    secondQuiz["data"].map(response => {
+      const nameQuestion = response["name"];
+      const givingResponse = response["question"].filter(
+        response => response.value === true
+      )[0];
+      const rightResponse = retrieveQuiz.listOfResponses.filter(
+        response => response[nameQuestion]
+      )[0];
+      if (
+        givingResponse &&
+        givingResponse["title"] === rightResponse[nameQuestion]
+      ) {
+        resultSecondQuiz = resultSecondQuiz + 1;
+      }
+    });
+    console.log(resultFirstQuiz);
+    console.log(resultSecondQuiz);
+    return "OK";
+  }
+
+  async getById(id: string) {
+    const subTest: SubTest = await this.subTestModel.findById(id);
     subTest.quiz = await this.quizService.getQuizzes(
       subTest.quiz.map(id => id.toString())
     );

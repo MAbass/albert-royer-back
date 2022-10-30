@@ -1,13 +1,15 @@
 import { Body, Controller, Post } from "@nestjs/common";
+import { AddRecipientTest } from "@validations";
 import { RecipientService } from "@services";
-import { AddRecipientDTO } from "@validations";
 
-@Controller()
+@Controller("/recipient/test")
 export class RecipientController {
   constructor(private readonly recipientService: RecipientService) {}
 
-  @Post("/recipient")
-  async addRecipient(@Body() recipient: AddRecipientDTO): Promise<any> {
-    return await this.recipientService.addRecipient(recipient);
+  @Post("")
+  async addRecipientTest(
+    @Body() recipientTest: AddRecipientTest
+  ): Promise<any> {
+    return this.recipientService.addRecipientTest(recipientTest);
   }
 }

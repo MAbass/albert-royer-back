@@ -10,6 +10,6 @@ export class RoleController {
 
   @Post("/role")
   async addRole(@Body() role: AddRoleDTO, @Res() res: Response): Promise<any> {
-    return await this.roleService.addRole(role);
+    return this.roleService.addRole(role);
   }
 }

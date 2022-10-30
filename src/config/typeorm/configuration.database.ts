@@ -1,18 +1,11 @@
 import { Injectable } from "@nestjs/common";
-// import { getMetadataArgsStorage } from 'typeorm'
-import {
-  MONGO_DB,
-  MONGO_HOST,
-  MONGO_PASS,
-  MONGO_PORT,
-  MONGO_USER,
-  TYPEORM
-} from "@environments";
+
 import { MyLogger } from "../logger";
 import {
   MongooseModuleOptions,
   MongooseOptionsFactory
 } from "@nestjs/mongoose";
+import { ConfigService } from "@nestjs/config";
 
 /*@Injectable()
 export class TypeOrmService implements TypeOrmOptionsFactory {
@@ -48,12 +41,15 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
 export class MongooseConfigService implements MongooseOptionsFactory {
   private readonly logger: MyLogger = new MyLogger(MongooseConfigService.name);
 
+  constructor(private configService: ConfigService) {}
+
   createMongooseOptions(): MongooseModuleOptions {
-    this.logger.debug(
-      `--------------TYPEORM: ${JSON.stringify(TYPEORM)}-------------------`
-    );
+    const hostname = this.configService.get("MONGO_HOST");
+    const port = this.configService.get("MONGO_PORT");
+    const database = this.configService.get("MONGO_DATABASE");
+
     return {
-      uri: `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`
+      uri: `mongodb://${hostname}:${port}/${database}`
     };
   }
 }

@@ -7,7 +7,7 @@ export type QuizDocument = Quiz & Document;
 export class Quiz {
   _id: string;
 
-  @Prop({ unique: true })
+  @Prop()
   name: string;
 
   @Prop()
