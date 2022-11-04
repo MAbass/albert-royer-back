@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsMongoId,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
   IsString,
   MinLength
@@ -45,4 +46,41 @@ export class UserLogin {
   @IsString({ message: "Le mot de passe doit être une chaîne de caractères" })
   @IsNotEmpty({ message: "Le mot de passe ne doit pas être vide" })
   public password: string;
+}
+
+export class SearchParamsUser {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  phone: string;
+
+  @IsString()
+  @IsOptional()
+  email: string;
+
+  @IsString()
+  @IsOptional()
+  role: string;
+}
+
+export class UpdateUserDTO {
+  @MinLength(3, { message: "Le nom doit être supérieur à 3 charactères" })
+  @IsString({ message: "Le nom doit être une chaîne de caractères" })
+  @IsOptional()
+  public name: string;
+
+  @IsPhoneNumber(null, { message: "Le numéro de téléphone n'est pas valide" })
+  @IsOptional()
+  public phone: string;
+
+  @IsEmail()
+  @IsOptional()
+  public email: string;
+
+  @IsString()
+  @IsOptional()
+  public role: string;
 }

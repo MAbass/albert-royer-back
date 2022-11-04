@@ -5,6 +5,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { QuizService } from "./quiz.service";
 import { SubtestModel } from "@models";
+import { launch } from "puppeteer";
 
 @Injectable()
 export class SubtestService {
@@ -87,5 +88,32 @@ export class SubtestService {
     );
     const subTestModel: SubtestModel = new SubtestModel(subTest);
     return subTestModel.getResource();
+  }
+
+  async downloadPdf() {
+    // Create a browser instance
+    const browser = await launch();
+
+    // Create a new page
+    const page = await browser.newPage();
+
+    // Website URL to export as pdf
+    const website_url = "http://localhost:8080/report";
+
+    // Open URL in current page
+    await page.goto(website_url, { waitUntil: "networkidle0" });
+
+    //To reflect CSS used for screens instead of print
+    await page.emulateMediaType("screen");
+
+    // Downlaod the PDF
+    await page.pdf({
+      path: "src/assets/files/result.pdf",
+      margin: { right: "50px", left: "50px" },
+      printBackground: true,
+      format: "A4"
+    });
+
+    return null;
   }
 }

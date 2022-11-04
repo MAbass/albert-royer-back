@@ -1,12 +1,13 @@
 import mongoose, { Document } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { SubTest } from "./subtest.entity";
+import { User } from "./user.entity";
 
 export type RecipientTestDocument = RecipientTest & Document;
 
 // Nested Schema
-@Schema()
-export class CommentResult extends Document {
+@Schema({ _id: false })
+export class CommentResult {
   @Prop()
   score: number;
 
@@ -15,8 +16,8 @@ export class CommentResult extends Document {
 }
 
 // Nested Schema
-@Schema()
-export class QuizResult extends Document {
+@Schema({ _id: false })
+export class QuizResult {
   @Prop({ type: CommentResult })
   firstQuiz: CommentResult;
 
@@ -32,7 +33,6 @@ export class QuizResult extends Document {
 
 @Schema({ timestamps: true })
 export class RecipientTest {
-  @Prop({})
   _id: string;
 
   @Prop({ default: false })
@@ -44,10 +44,10 @@ export class RecipientTest {
   @Prop({ type: QuizResult })
   result: QuizResult;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Recipient" })
-  recipient: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "User" })
+  user: User;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Subtest" })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "SubTest" })
   subtest: SubTest;
 }
 

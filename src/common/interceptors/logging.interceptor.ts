@@ -8,7 +8,6 @@ import {
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import * as chalk from "chalk";
-import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {

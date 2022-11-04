@@ -29,4 +29,6 @@ export class User {
   role: Role;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.index({ name: "text", email: "text" });
+export { UserSchema };

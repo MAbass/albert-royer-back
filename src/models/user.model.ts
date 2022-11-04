@@ -12,9 +12,9 @@ export class UserModel {
     this.name = data.name;
     this.phone = data.phone;
     this.email = data.email;
-    this.subTestId = data.subTestId["_id"];
+    this.subTestId = data.subTestId;
     this.password = data.password;
-    this.role = data.role["name"];
+    this.role = data.role;
   }
 
   getResource() {

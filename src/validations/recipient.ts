@@ -1,4 +1,12 @@
-import { IsMongoId, IsNotEmpty, IsObject, IsOptional } from "class-validator";
+import {
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString
+} from "class-validator";
+import { Type } from "class-transformer";
 
 class TestResponse {
   @IsObject()
@@ -19,9 +27,51 @@ export class AddRecipientTest {
 
   @IsMongoId()
   @IsNotEmpty()
-  public recipient: string;
+  public user: string;
 
   @IsMongoId()
   @IsNotEmpty()
   public subtest: string;
+}
+
+export class SearchParams {
+  @IsOptional()
+  @IsNumber()
+  infScore: number;
+
+  @IsOptional()
+  @IsNumber()
+  supScore: number;
+
+  @IsString()
+  @IsOptional()
+  decisionApp: string;
+
+  @IsString()
+  @IsOptional()
+  decisionOfSuperior: string;
+
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @IsOptional()
+  @IsMongoId()
+  subtest: number;
+}
+
+export class PaginationParams {
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  size: number = 10;
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  page: number = 1;
+
+  @IsOptional()
+  @IsString()
+  search: string;
 }

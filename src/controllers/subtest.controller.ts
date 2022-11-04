@@ -8,24 +8,31 @@ export class SubtestController {
 
   @Post("")
   async postSubtest(@Body() subTest: SubTestAddDTO): Promise<any> {
-    return await this.subtestService.addSubtest(subTest);
+    return this.subtestService.addSubtest(subTest);
   }
+
   @Post("/submit")
   async postResponse(@Body() testResponse: TestResponse): Promise<any> {
-    return await this.subtestService.submitResponse(testResponse);
+    return this.subtestService.submitResponse(testResponse);
   }
 
   @Get("")
   async getSubTest(): Promise<any> {
-    return await this.subtestService.getAll();
+    return this.subtestService.getAll();
   }
 
   @Get(":name")
   async getSubTestByName(@Param("name") name: string): Promise<any> {
-    return await this.subtestService.getByName(name);
+    return this.subtestService.getByName(name);
   }
+
   @Get(":id/by-id")
   async getSubTestById(@Param("id") name: string): Promise<any> {
-    return await this.subtestService.getById(name);
+    return this.subtestService.getById(name);
+  }
+
+  @Get("/pdf/download")
+  async downloadTestPdf(): Promise<any> {
+    return this.subtestService.downloadPdf();
   }
 }
