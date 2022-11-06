@@ -35,8 +35,8 @@ export class QuizResult {
 export class RecipientTest {
   _id: string;
 
-  @Prop({ default: false })
-  decision: boolean;
+  @Prop({ default: "waiting", enum: ["waiting", "rejected", "approved"] })
+  decision: string;
 
   @Prop()
   decisionComment: string;

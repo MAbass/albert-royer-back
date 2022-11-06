@@ -1,5 +1,10 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
-import { AddRecipientTest, PaginationParams, SearchParams } from "@validations";
+import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  AddComment,
+  AddRecipientTest,
+  PaginationParams,
+  SearchParams
+} from "@validations";
 import { RecipientService } from "@services";
 
 @Controller("/recipient/test")
@@ -9,6 +14,16 @@ export class RecipientController {
   @Post("")
   async addRecipientTest(@Body() recipientTest: AddRecipientTest) {
     return this.recipientService.addRecipientTest(recipientTest);
+  }
+
+  @Get("/:id")
+  async findRecipientById(@Param("id") id: String) {
+    return this.recipientService.findRecipientById(id);
+  }
+
+  @Put("/:id/add-decision")
+  async addDecision(@Param("id") id: String, @Body() addComment: AddComment) {
+    return this.recipientService.addDecision(id, addComment);
   }
 
   @Get("")

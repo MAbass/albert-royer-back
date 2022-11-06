@@ -2,9 +2,11 @@ import {
   IsEmail,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
+  IsNumberString,
   IsOptional,
-  IsPhoneNumber,
   IsString,
+  IsUUID,
   MinLength
 } from "class-validator";
 
@@ -14,7 +16,7 @@ export class AddUserDTO {
   @IsNotEmpty({ message: "Le nom ne doit pas être vide" })
   public name: string;
 
-  @IsPhoneNumber(null, { message: "Le numéro de téléphone n'est pas valide" })
+  @IsNumberString()
   @IsNotEmpty({ message: "Le numéro de téléphone ne doit pas être vide" })
   public phone: string;
 
@@ -48,13 +50,13 @@ export class UserLogin {
   public password: string;
 }
 
-export class SearchParamsUser {
+export class SearchParamsUserDTO {
   @IsOptional()
   @IsString()
   name: string;
 
   @IsOptional()
-  @IsString()
+  @IsNumberString()
   phone: string;
 
   @IsString()
@@ -72,7 +74,7 @@ export class UpdateUserDTO {
   @IsOptional()
   public name: string;
 
-  @IsPhoneNumber(null, { message: "Le numéro de téléphone n'est pas valide" })
+  @IsNumber(null)
   @IsOptional()
   public phone: string;
 
@@ -83,4 +85,30 @@ export class UpdateUserDTO {
   @IsString()
   @IsOptional()
   public role: string;
+}
+
+export class ResetPasswordDTO {
+  @IsEmail()
+  @IsOptional()
+  public email: string;
+}
+
+export class SendEmailDTO {
+  @IsEmail()
+  @IsOptional()
+  public email: string;
+
+  @IsEmail()
+  @IsOptional()
+  public token: string;
+}
+
+export class ValidateUserDTO {
+  @IsUUID()
+  @IsNotEmpty()
+  public tokenId: string;
+
+  @IsEmail()
+  @IsNotEmpty()
+  public email: string;
 }

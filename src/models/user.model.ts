@@ -6,6 +6,7 @@ export class UserModel {
   private readonly subTestId: string;
   private readonly password: string;
   private readonly role: string;
+  private readonly isVerified: boolean;
 
   constructor(data) {
     this.id = data._id;
@@ -15,6 +16,7 @@ export class UserModel {
     this.subTestId = data.subTestId;
     this.password = data.password;
     this.role = data.role;
+    this.isVerified = data.isVerified;
   }
 
   getResource() {
@@ -25,7 +27,8 @@ export class UserModel {
       test: this.subTestId,
       email: this.email,
       password: this.password,
-      role: this.role
+      role: this.role,
+      isVerified: this.isVerified
     };
   }
 }

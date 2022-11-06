@@ -5,10 +5,12 @@ import { User, UserSchema } from "@entities";
 import { MongooseModule } from "@nestjs/mongoose";
 import { RoleModule, SubtestModule } from "@modules";
 import { ConfigModule } from "@nestjs/config";
+import { MailerModule } from "@nestjs-modules/mailer";
 
 @Module({
   imports: [
     ConfigModule,
+    MailerModule,
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     forwardRef(() => RoleModule),
     forwardRef(() => SubtestModule)

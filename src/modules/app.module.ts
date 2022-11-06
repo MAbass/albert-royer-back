@@ -10,8 +10,9 @@ import {
   UserModule
 } from "@modules";
 import { MongooseModule } from "@nestjs/mongoose";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import configEnvironment from "@config-env";
+import { MailerModule } from "@nestjs-modules/mailer";
 
 @Module({
   imports: [
@@ -32,6 +33,20 @@ import configEnvironment from "@config-env";
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useClass: MongooseConfigService
+    }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => ({
+        transport: {
+          host: config.get("SMTP_HOST"),
+          secure: false,
+          auth: {
+            user: config.get("SMTP_USERNAME"),
+            pass: config.get("SMTP_PASSWORD")
+          }
+        }
+      }),
+      inject: [ConfigService]
     }),
     ScheduleModule.forRoot()
   ]

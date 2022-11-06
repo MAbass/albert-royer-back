@@ -23,6 +23,10 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException("Verifier vos paramétres de connexion.");
     }
+    if (!user.isVerified) {
+      throw new UnauthorizedException("Veuillez confirmer votre email.");
+    }
+
     const passwordCrypt = await bcrypt.compare(password, user && user.password);
     if (user && passwordCrypt) {
       const userModel = new UserModel(user);

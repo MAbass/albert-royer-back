@@ -9,7 +9,7 @@ import {
   User,
   UserDocument
 } from "@entities";
-import { AddRecipientTest, SearchParams } from "@validations";
+import { AddComment, AddRecipientTest, SearchParams } from "@validations";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { QuizService } from "./quiz.service";
@@ -196,10 +196,8 @@ export class RecipientService {
       queryGlobal.push({ $or: queryInfScore });
     }
 
-    if (search && search.decisionOfSuperior) {
-      query["decision"] = { $eq: search.decisionApp };
-    }
-    if (search && search.decisionApp) {
+    if (search && search.decision) {
+      query["decision"] = { $eq: search.decision };
     }
 
     if (search && search.subtest) {
@@ -227,5 +225,39 @@ export class RecipientService {
       })
     );
     return paginationResponse(page, size, result, totalItems);
+  }
+
+  async addDecision(id: String, addComment: AddComment) {
+    const recipientTestFound = await this.recipientModel.findById(id);
+
+    if (!recipientTestFound) {
+      throw new NotFoundException("Le resultat n'existe pas");
+    }
+
+    if (addComment.decisionComment) {
+      recipientTestFound.decisionComment = addComment.decisionComment;
+    }
+    if (addComment.decision) {
+      recipientTestFound.decision = addComment.decision;
+    }
+
+    const recipientTestSaved: RecipientTest = await new this.recipientModel(
+      recipientTestFound
+    ).save();
+
+    const recipientTestModel = new RecipientModel(recipientTestSaved);
+
+    return recipientTestModel.getResource();
+  }
+
+  async findRecipientById(id: String) {
+    const recipientTestFound = await this.recipientModel.findById(id);
+
+    if (!recipientTestFound) {
+      throw new NotFoundException("Le resultat n'existe pas");
+    }
+    const recipientTestModel = new RecipientModel(recipientTestFound);
+
+    return recipientTestModel.getResource();
   }
 }

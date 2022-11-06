@@ -1,4 +1,5 @@
 import {
+  IsEnum,
   IsMongoId,
   IsNotEmpty,
   IsNumber,
@@ -49,7 +50,7 @@ export class SearchParams {
 
   @IsString()
   @IsOptional()
-  decisionOfSuperior: string;
+  decision: string;
 
   @IsString()
   @IsOptional()
@@ -58,6 +59,16 @@ export class SearchParams {
   @IsOptional()
   @IsMongoId()
   subtest: number;
+}
+
+export class AddComment {
+  @IsEnum(["waiting", "rejected", "approved"])
+  @IsNotEmpty()
+  decision: string;
+
+  @IsString()
+  @IsNotEmpty()
+  decisionComment: string;
 }
 
 export class PaginationParams {
