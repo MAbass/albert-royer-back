@@ -18,4 +18,4 @@ jobs:
       - name: Build Container image
         run: docker build -t m2m2d0u/psycho-backend:latest .
       - name: Publish Docker image
-        run: docker push psycho-frontend
+        run: docker push m2m2d0u/psycho-backend
