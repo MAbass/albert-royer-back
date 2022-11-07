@@ -10,7 +10,7 @@
     "prebuild": "rimraf dist",
     "build:dev": "SET NODE_ENV=dev&&nest build",
     "build:prod": "export NODE_ENV=prod&&nest build",
-    "build:stag": "SET NODE_ENV=stag&&nest build",
+    "build:stag": "export NODE_ENV=stag&&nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:local:dev-webpack:win": "SET NODE_ENV=dev&&nest build --webpack --webpackPath webpack-hmr.config.js --watch",
