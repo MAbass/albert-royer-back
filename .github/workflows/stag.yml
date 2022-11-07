@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build-docker-image:
+    name: Publish to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        run: docker login -u m2m2d0u -p c8DjdwQ9CXf3Xbe
+      - name: Build Container image
+        run: docker build -t psycho-backend:latest .
+      - name: Publish Docker image
+        run: docker push psycho-backend
