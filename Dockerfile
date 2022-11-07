@@ -1,4 +1,4 @@
-FROM node:12.2.0
+FROM node:16.13.1
 
 # Set working dir in the container to /
 WORKDIR /

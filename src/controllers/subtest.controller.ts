@@ -31,8 +31,8 @@ export class SubtestController {
     return this.subtestService.getById(name);
   }
 
-  @Get("/pdf/download")
-  async downloadTestPdf(): Promise<any> {
-    return this.subtestService.downloadPdf();
+  @Get("/pdf/download/:search")
+  async downloadTestPdf(@Param("search") search: string): Promise<any> {
+    return this.subtestService.downloadPdf(search);
   }
 }

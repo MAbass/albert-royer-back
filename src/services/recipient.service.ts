@@ -13,7 +13,13 @@ import { AddComment, AddRecipientTest, SearchParams } from "@validations";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { QuizService } from "./quiz.service";
-import { getDecisionFirstQuiz, paginationResponse } from "@common";
+import {
+  getDecisionFirstQuiz,
+  getDecisionFourthQuiz,
+  getDecisionSecondQuiz,
+  getDecisionThirdQuiz,
+  paginationResponse
+} from "@common";
 import { RecipientModel } from "@models";
 
 @Injectable()
@@ -126,17 +132,20 @@ export class RecipientService {
 
     const commentResultSecond = new CommentResult();
     commentResultSecond.score = resultSecondQuiz;
+    commentResultSecond.decision = getDecisionSecondQuiz(resultSecondQuiz);
     quizResult.secondQuiz = commentResultSecond;
 
     if (thirdQuiz) {
       const commentResultThird = new CommentResult();
       commentResultThird.score = resultThirdQuiz;
+      commentResultThird.decision = getDecisionThirdQuiz(resultThirdQuiz);
       quizResult.thirdQuiz = commentResultThird;
     }
 
     if (thirdQuiz) {
       const commentResultFourth = new CommentResult();
       commentResultFourth.score = resultFourthQuiz;
+      commentResultFourth.decision = getDecisionFourthQuiz(resultFourthQuiz);
       quizResult.fourthQuiz = commentResultFourth;
     }
 
@@ -146,6 +155,28 @@ export class RecipientService {
     const recipientModel = new RecipientModel(recipientSaved);
 
     return recipientModel.getResource();
+  }
+
+  async calculateExisting() {
+    const listTest: Array<RecipientTest> = await this.recipientModel.find();
+
+    for (const test of listTest) {
+      test.result.secondQuiz.decision = getDecisionSecondQuiz(
+        test.result.secondQuiz.score
+      );
+      if (test.result.thirdQuiz) {
+        test.result.thirdQuiz.decision = getDecisionThirdQuiz(
+          test.result.thirdQuiz.score
+        );
+      }
+      if (test.result.fourthQuiz) {
+        test.result.fourthQuiz.decision = getDecisionFourthQuiz(
+          test.result.fourthQuiz.score
+        );
+      }
+      const saved = await new this.recipientModel(test).save();
+    }
+    return "OK";
   }
 
   async searchRecipient(search: SearchParams, page: number, size: number) {

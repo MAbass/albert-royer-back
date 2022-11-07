@@ -11,42 +11,44 @@ import {
 } from "class-validator";
 
 export class AddUserDTO {
-  @MinLength(3, { message: "Le nom doit être supérieur à 3 charactères" })
-  @IsString({ message: "Le nom doit être une chaîne de caractères" })
-  @IsNotEmpty({ message: "Le nom ne doit pas être vide" })
+  @MinLength(3, {
+    message: "The number of characters for the name is greater than 3"
+  })
+  @IsString({ message: "The name is a string" })
+  @IsNotEmpty({ message: "The name is required" })
   public name: string;
 
   @IsNumberString()
-  @IsNotEmpty({ message: "Le numéro de téléphone ne doit pas être vide" })
+  @IsNotEmpty({ message: "The phone number is required" })
   public phone: string;
 
   @IsEmail()
-  @IsNotEmpty({ message: "L'email ne doit pas être vide" })
+  @IsNotEmpty({ message: "The email is required" })
   public email: string;
 
-  @IsMongoId({ message: "L'id du subtest doit être un Id" })
-  @IsNotEmpty({ message: "L'Id ne doit pas être vide" })
+  @IsMongoId({ message: "The Id of subtest must be a MongoId" })
+  @IsNotEmpty({ message: "The subtest Id is required" })
   public subTestId: string;
 
   @IsString()
   @MinLength(3)
-  @IsNotEmpty({ message: "Le mot de passe ne doit pas être vide" })
+  @IsNotEmpty({ message: "The password is required" })
   public password: string;
 
   @IsString()
-  @IsNotEmpty({ message: "Le role ne doit pas être vide" })
+  @IsNotEmpty({ message: "The role name is required" })
   public role: string;
 }
 
 export class UserLogin {
   @IsString({
-    message: "Le nom d'utilisateur doit être une chaîne de caractères"
+    message: "The username must be a characters"
   })
-  @IsNotEmpty({ message: "Le nom d'utilisateur ne doit pas être vide" })
+  @IsNotEmpty({ message: "The username is required" })
   public username: string;
 
-  @IsString({ message: "Le mot de passe doit être une chaîne de caractères" })
-  @IsNotEmpty({ message: "Le mot de passe ne doit pas être vide" })
+  @IsString({ message: "The password must be a characters" })
+  @IsNotEmpty({ message: "The password is required" })
   public password: string;
 }
 
@@ -69,12 +71,14 @@ export class SearchParamsUserDTO {
 }
 
 export class UpdateUserDTO {
-  @MinLength(3, { message: "Le nom doit être supérieur à 3 charactères" })
-  @IsString({ message: "Le nom doit être une chaîne de caractères" })
+  @MinLength(3, {
+    message: "The number of characters for the name is greater than 3"
+  })
+  @IsString({ message: "The name is a string" })
   @IsOptional()
   public name: string;
 
-  @IsNumber(null)
+  @IsNumberString(null)
   @IsOptional()
   public phone: string;
 

@@ -6,6 +6,8 @@ import { Model } from "mongoose";
 import { QuizService } from "./quiz.service";
 import { SubtestModel } from "@models";
 import { launch } from "puppeteer";
+import { getReport } from "@common";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class SubtestService {
@@ -15,7 +17,8 @@ export class SubtestService {
     @InjectModel(SubTest.name)
     private subTestModel: Model<SubTestDocument>,
     @Inject(QuizService)
-    private readonly quizService: QuizService
+    private readonly quizService: QuizService,
+    private readonly configService: ConfigService
   ) {}
 
   async addSubtest(subTestDTO: SubTestAddDTO): Promise<SubTest> {
@@ -90,15 +93,14 @@ export class SubtestService {
     return subTestModel.getResource();
   }
 
-  async downloadPdf() {
-    // Create a browser instance
+  async downloadPdf(search: string) {
     const browser = await launch();
 
     // Create a new page
     const page = await browser.newPage();
 
     // Website URL to export as pdf
-    const website_url = "http://localhost:8080/report";
+    const website_url = this.configService.get("LINK_REPORT") + search;
 
     // Open URL in current page
     await page.goto(website_url, { waitUntil: "networkidle0" });
@@ -110,10 +112,10 @@ export class SubtestService {
     await page.pdf({
       path: "src/assets/files/result.pdf",
       margin: { right: "50px", left: "50px" },
-      printBackground: true,
+      // printBackground: true,
       format: "A4"
     });
 
-    return null;
+    return getReport();
   }
 }

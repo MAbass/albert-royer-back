@@ -16,6 +16,11 @@ export class RecipientController {
     return this.recipientService.addRecipientTest(recipientTest);
   }
 
+  @Get("/calculate")
+  async calculateExisting() {
+    return this.recipientService.calculateExisting();
+  }
+
   @Get("/:id")
   async findRecipientById(@Param("id") id: String) {
     return this.recipientService.findRecipientById(id);

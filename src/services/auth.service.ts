@@ -21,10 +21,10 @@ export class AuthService {
       .populate("subTestId")
       .populate("role");
     if (!user) {
-      throw new UnauthorizedException("Verifier vos paramétres de connexion.");
+      throw new UnauthorizedException("Check your login settings.");
     }
     if (!user.isVerified) {
-      throw new UnauthorizedException("Veuillez confirmer votre email.");
+      throw new UnauthorizedException("Please confirm your email.");
     }
 
     const passwordCrypt = await bcrypt.compare(password, user && user.password);

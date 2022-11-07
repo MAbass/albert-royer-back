@@ -9,6 +9,11 @@ export async function base64_encode(filename) {
   );
 }
 
+export async function getReport() {
+  const appDir = dirname(require.main.filename);
+  return readFileSync(appDir + "/assets/files/result.pdf", "base64");
+}
+
 export function getDecisionFirstQuiz(score) {
   if (score >= 0 && score <= 50) {
     return "prosocial";
@@ -21,6 +26,38 @@ export function getDecisionFirstQuiz(score) {
   }
   if (score >= -10) {
     return "individualiste";
+  }
+}
+
+export function getDecisionSecondQuiz(score) {
+  if (score >= 25) {
+    return "bon";
+  }
+  if (score >= 19 && score < 25) {
+    return "moyen";
+  }
+  if (score < 19) {
+    return "faible";
+  }
+}
+
+export function getDecisionThirdQuiz(score) {
+  if (score >= 2) {
+    return "bon";
+  }
+  if (score === 1) {
+    return "moyen";
+  }
+  if (score < 1) {
+    return "faible";
+  }
+}
+
+export function getDecisionFourthQuiz(score) {
+  if (score) {
+    return "stable";
+  } else {
+    return "pas stable";
   }
 }
 
