@@ -16,6 +16,6 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u m2m2d0u -p c8DjdwQ9CXf3Xbe
       - name: Build Container image
-        run: docker build -f Dockerfile-staging -t psycho-backend:latest .
+        run: docker build -f Dockerfile-staging -t m2m2d0u/psycho-backend:latest .
       - name: Publish Docker image
-        run: docker push psycho-backend
+        run: docker push m2m2d0u/psycho-backend
