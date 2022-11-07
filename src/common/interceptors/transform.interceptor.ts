@@ -8,7 +8,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 export interface Response<T> {
-  data: T;
+  message: T;
 }
 
 @Injectable()
@@ -18,23 +18,16 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler
   ): Observable<Response<T>> {
-    const ctx = context.switchToHttp();
-    const response = ctx.getResponse();
-    const request = ctx.getRequest();
-    // {
-    //   statusCode: response.statusCode,
-    //     message: data,
-    //   timestamp: new Date().toISOString(),
-    //   path: request.url
-    // }
-
     return next.handle().pipe(
-      map(function(data) {
+      map(message => {
+        const ctx = context.switchToHttp();
+        const res = ctx.getResponse();
+        const req = ctx.getRequest();
         return {
-          statusCode: response.statusCode,
-          data: data,
+          statusCode: res.statusCode,
+          message,
           timestamp: new Date().toISOString(),
-          path: request.url
+          path: req.url
         };
       })
     );
