@@ -17,4 +17,4 @@ RUN yarn install
 RUN yarn run build:stag
 
 # Start the server using the staging build
-CMD [ "npm", "run", "start:stag:linux" ]
+CMD [ "yarn", "run", "start:stag:linux" ]
