@@ -1,15 +1,20 @@
-FROM node:16.13.1
+# Base image
+FROM node:16
 
-# Set working dir in the container to /
-WORKDIR /
+# Create app directory
+WORKDIR /app
 
-# Copy application to / directory and install dependencies
-COPY package.json ./
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+
+# Install app dependencies
 RUN npm install
+
+# Bundle app source
 COPY . .
 
-# Expose port 8081 to the outside once the container has launched
-EXPOSE 11047
+# Creates a "dist" folder with the production build
+RUN npm run build:prod
 
-# what should be executed when the Docker image is launching
-CMD "npm run start:prod"
+# Start the server using the production build
+CMD [ "npm", "run", "start:stag:linux" ]
