@@ -14,7 +14,7 @@ COPY . .
 RUN yarn install
 
 # Creates a "dist" folder with the production build
-RUN npm run build:stag
+RUN yarn run build:stag
 
 # Start the server using the staging build
-CMD [ "npm", "run", "start:stag:linux" ]
+CMD [ "yarn", "run", "start:stag:linux" ]
