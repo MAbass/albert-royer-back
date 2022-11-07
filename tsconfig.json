@@ -11,8 +11,12 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "noLib": false,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
     "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
     "paths": {
       "@auth": [
         "src/auth"
@@ -58,5 +62,8 @@
       ]
     }
   },
-  "compileOnSave": false
+  "compileOnSave": false,
+  "include": [
+    "src"
+  ]
 }
