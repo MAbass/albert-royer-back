@@ -15,6 +15,10 @@ export class RecipientController {
   async addRecipientTest(@Body() recipientTest: AddRecipientTest) {
     return this.recipientService.addRecipientTest(recipientTest);
   }
+  @Get(":id/haveTest")
+  async checkIfRecipientHasTest(@Param("id") id: string) {
+    return this.recipientService.checkIfRecipientHasTest(id);
+  }
 
   @Get("/calculate")
   async calculateExisting() {

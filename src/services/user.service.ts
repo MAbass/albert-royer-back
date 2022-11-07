@@ -166,6 +166,8 @@ export class UserService {
     if (updateDTO.role) {
       userFound.role = role;
     }
+    userFound.isVerified = updateDTO.isVerified;
+
     const userSaved: User = await new this.userModel(userFound).save();
 
     const userModel: UserModel = new UserModel(userSaved);

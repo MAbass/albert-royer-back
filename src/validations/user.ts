@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsMongoId,
   IsNotEmpty,
@@ -89,6 +90,10 @@ export class UpdateUserDTO {
   @IsString()
   @IsOptional()
   public role: string;
+
+  @IsBoolean()
+  @IsOptional()
+  public isVerified: boolean;
 }
 
 export class ResetPasswordDTO {

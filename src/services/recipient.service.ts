@@ -291,4 +291,9 @@ export class RecipientService {
 
     return recipientTestModel.getResource();
   }
+
+  async checkIfRecipientHasTest(id: string) {
+    const recipientTestFound = await this.recipientModel.findOne({ user: id });
+    return !!recipientTestFound;
+  }
 }
