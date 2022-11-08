@@ -95,14 +95,16 @@ export class SubtestService {
 
   async downloadPdf(search: string) {
     this.logger.debug(`Env: ${this.configService.get("LINK_REPORT")}`);
-    const browser = await launch({ headless: true });
-
-    /*
+    let browser;
     if (process.env.NODE_ENV === "stag" || process.env.NODE_ENV === "prod") {
+      browser = await launch({
+        executablePath: "/usr/bin/google-chrome",
+        headless: false,
+        args: ["--no-sandbox"]
+      });
     } else {
       browser = await launch();
     }
-*/
 
     // Create a new page
     const page = await browser.newPage();
