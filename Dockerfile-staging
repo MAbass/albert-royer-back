@@ -3,7 +3,7 @@ FROM node:16
 
 RUN apt install -y
 RUN apt upgrade -y
-RUN apt-get install chromium
+# RUN apt-get install chromium
 
 # Create app directory
 WORKDIR /app
