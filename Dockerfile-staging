@@ -1,7 +1,9 @@
 # Base image
 FROM node:16
 
-RUN apt install -y && apt upgrade -y && apt install chromium -y
+RUN apt install -y
+RUN apt upgrade -y
+RUN apt install chromium -y
 
 # Create app directory
 WORKDIR /app
