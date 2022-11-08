@@ -98,9 +98,7 @@ export class SubtestService {
     let browser;
     if (process.env.NODE_ENV === "stag" || process.env.NODE_ENV === "prod") {
       browser = await launch({
-        executablePath: "/usr/bin/chromium",
-        headless: false,
-        args: ["--no-sandbox"]
+        executablePath: "/usr/bin/google-chrome"
       });
     } else {
       browser = await launch();
