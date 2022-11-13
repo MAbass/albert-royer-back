@@ -293,7 +293,8 @@ export class RecipientService {
   }
 
   async checkIfRecipientHasTest(id: string) {
-    if (id === undefined) {
+    this.logger.debug(`---------------Id:${id}`);
+    if (id === "undefined") {
       return false;
     }
     const recipientTestFound = await this.recipientModel.findOne({ user: id });

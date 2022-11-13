@@ -79,8 +79,6 @@ export class SubtestService {
         resultSecondQuiz = resultSecondQuiz + 1;
       }
     });
-    console.log(resultFirstQuiz);
-    console.log(resultSecondQuiz);
     return "OK";
   }
 
@@ -117,7 +115,7 @@ export class SubtestService {
     //To reflect CSS used for screens instead of print
     await page.emulateMediaType("screen");
 
-    // Downlaod the PDF
+    // Download the PDF
     await page.pdf({
       path: "src/assets/files/result.pdf",
       margin: { right: "50px", left: "50px" },
