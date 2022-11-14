@@ -1,13 +1,23 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards
+} from "@nestjs/common";
 import {
   AddComment,
   AddRecipientTest,
   PaginationParams,
   SearchParams
 } from "@validations";
-import { RecipientService } from "@services";
+import { JwtAuthGuard, RecipientService } from "@services";
 
 @Controller("/recipient/test")
+@UseGuards(JwtAuthGuard)
 export class RecipientController {
   constructor(private readonly recipientService: RecipientService) {}
 

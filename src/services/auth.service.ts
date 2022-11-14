@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException
+} from "@nestjs/common";
 import { User, UserDocument } from "@entities";
 import * as bcrypt from "bcrypt";
 import { UserModel } from "@models";
@@ -6,6 +10,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
+import { RefreshTokenDTO, ResponseRefreshToken } from "../validations/auth";
 
 @Injectable()
 export class AuthService {
@@ -39,18 +44,30 @@ export class AuthService {
     return this.retrieveToken(user);
   }
 
-  async refreshToken(user) {
-    const userFound: User = await this.userModel
-      .findById(user.userId)
-      .populate("subTestId")
-      .populate("role");
-    const userModel = new UserModel(userFound);
-    return this.retrieveToken(userModel.getResource());
+  async refreshToken(tokenDTO: RefreshTokenDTO) {
+    try {
+      const resultVerified: ResponseRefreshToken = this.jwtService.verify(
+        tokenDTO.refresh_token,
+        {
+          secret: this.configService.get("TOKEN_SECRET")
+        }
+      );
+      const userFound = await this.userModel
+        .findById(resultVerified.id)
+        .populate("role")
+        .populate("subTestId");
+      const user = new UserModel(userFound);
+      return this.retrieveToken(user.getResource());
+    } catch (error) {
+      throw new BadRequestException("Your token is expired.");
+    }
   }
 
   private retrieveToken(user) {
-    const payload = { username: user.username, sub: user.userId };
+    const payload = { id: user.id };
+    // console.log(user)
     const { password, ...result } = user;
+    // console.log(result)
     return {
       access_token: this.jwtService.sign(result, {
         secret: this.configService.get("TOKEN_SECRET"),

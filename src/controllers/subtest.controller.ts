@@ -1,17 +1,19 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { SubTestAddDTO, TestResponse } from "@validations";
-import { SubtestService } from "@services";
+import { JwtAuthGuard, SubtestService } from "@services";
 
 @Controller("/subtest")
 export class SubtestController {
   constructor(private readonly subtestService: SubtestService) {}
 
   @Post("")
+  @UseGuards(JwtAuthGuard)
   async postSubtest(@Body() subTest: SubTestAddDTO): Promise<any> {
     return this.subtestService.addSubtest(subTest);
   }
 
   @Post("/submit")
+  @UseGuards(JwtAuthGuard)
   async postResponse(@Body() testResponse: TestResponse): Promise<any> {
     return this.subtestService.submitResponse(testResponse);
   }
@@ -32,6 +34,7 @@ export class SubtestController {
   }
 
   @Get("/pdf/download/:search")
+  @UseGuards(JwtAuthGuard)
   async downloadTestPdf(@Param("search") search: string): Promise<any> {
     return this.subtestService.downloadPdf(search);
   }

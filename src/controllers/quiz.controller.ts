@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { QuizService } from "@services";
 import { AddQuizDTO } from "@validations";
+import { JwtAuthGuard } from "@services";
 
 @Controller("quiz/")
+@UseGuards(JwtAuthGuard)
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 

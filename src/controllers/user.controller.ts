@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards
+} from "@nestjs/common";
 import {
   AddUserDTO,
   PaginationParams,
@@ -7,7 +16,7 @@ import {
   UpdateUserDTO,
   ValidateUserDTO
 } from "@validations";
-import { UserService } from "@services";
+import { JwtAuthGuard, UserService } from "@services";
 import { User } from "@entities";
 import { UserModel } from "@models";
 
@@ -23,17 +32,20 @@ export class UserController {
   }
 
   @Get("")
+  @UseGuards(JwtAuthGuard)
   async getUsers(@Query() { page, size, search }: PaginationParams) {
     const parseSearch: SearchParamsUserDTO = JSON.parse(search);
     return this.userService.getAll(parseSearch, page, size);
   }
 
   @Get("/:id")
+  @UseGuards(JwtAuthGuard)
   async getUserById(@Param("id") id: String) {
     return this.userService.getUserById(id);
   }
 
   @Put("/:id/update")
+  @UseGuards(JwtAuthGuard)
   async updateUser(@Param("id") id: String, @Body() updateDTO: UpdateUserDTO) {
     return this.userService.updateUser(id, updateDTO);
   }
