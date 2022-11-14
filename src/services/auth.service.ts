@@ -59,7 +59,7 @@ export class AuthService {
       const user = new UserModel(userFound);
       return this.retrieveToken(user.getResource());
     } catch (error) {
-      throw new BadRequestException("Your token is expired.");
+      throw new UnauthorizedException("Your refresh token is expired.");
     }
   }
 
