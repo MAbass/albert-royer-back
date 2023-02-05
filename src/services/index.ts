@@ -6,3 +6,4 @@ export * from "./auth.service";
 export * from "./strategy/local.strategy";
 export * from "./strategy/jwt.strategy";
 export * from "./recipient.service";
+export * from "./job.service";

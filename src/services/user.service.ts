@@ -14,6 +14,8 @@ import {
   ValidateUserDTO
 } from "@validations";
 import {
+  Job,
+  JobDocument,
   Role,
   SubTest,
   SubTestDocument,
@@ -31,6 +33,7 @@ import { paginationResponse } from "@common";
 import { MailerService } from "@nestjs-modules/mailer";
 import { uuidv4 } from "@utils";
 import { generate } from "generate-password";
+import { RecipientService } from "./recipient.service";
 
 @Injectable()
 export class UserService {
@@ -38,9 +41,11 @@ export class UserService {
 
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    @Inject(RoleService)
-    private readonly roleService: RoleService,
+    @Inject(RoleService) private readonly roleService: RoleService,
+    @Inject(RecipientService)
+    private readonly recipientService: RecipientService,
     @InjectModel(SubTest.name) private subTestModel: Model<SubTestDocument>,
+    @InjectModel(Job.name) private jobModel: Model<JobDocument>,
     private configService: ConfigService,
     private mailerService: MailerService
   ) {}
@@ -77,11 +82,17 @@ export class UserService {
     if (userFound) {
       throw new ConflictException("User already exist");
     }
+    const jobFound: Job = await this.jobModel.findById(user.jobId);
+    if (!jobFound) {
+      throw new NotFoundException(`The job is not found`);
+    }
+
     userToSave.name = user.name;
     userToSave.password = await this.cryptPassword(user.password);
     userToSave.phone = user.phone;
     userToSave.email = user.email;
     userToSave.role = role;
+    userToSave.job = jobFound;
 
     const tokenToSave = new TokenClass();
     tokenToSave.tokenId = uuidv4();
@@ -91,10 +102,7 @@ export class UserService {
     const createdUser = new this.userModel(userToSave);
     const userSaved: User = await createdUser.save();
 
-    await this.sendEmailForCreateAccount(
-      userSaved.email,
-      userSaved.token.tokenId
-    );
+    this.sendEmailForCreateAccount(userSaved.email, userSaved.token.tokenId);
 
     return userSaved;
   }
@@ -113,6 +121,9 @@ export class UserService {
     }
     if (search.role && search.role.length) {
       queryUser["role"] = { $eq: search.role };
+    }
+    if (search.job && search.job.length) {
+      queryUser["job"] = { $eq: search.job };
     }
     const totalItems = await this.userModel.find(queryUser).countDocuments();
     const searchResult = await this.userModel
@@ -166,6 +177,9 @@ export class UserService {
     if (updateDTO.role) {
       userFound.role = role;
     }
+    if (typeof updateDTO.isVerified === "boolean") {
+      userFound.isVerified = updateDTO.isVerified;
+    }
     const userSaved: User = await new this.userModel(userFound).save();
 
     const userModel: UserModel = new UserModel(userSaved);
@@ -174,7 +188,7 @@ export class UserService {
   }
 
   async sendEmailForCreateAccount(email, token) {
-    const result = await this.mailerService.sendMail({
+    await this.mailerService.sendMail({
       to: email,
       subject: "Verify mail",
       text: `Hello,\nIf you want to validate your account please click on this link ${this.configService.get(
@@ -184,16 +198,14 @@ export class UserService {
         "/" +
         token}.\nIf you are not the originator of this request please ignore this message.\n\n Best Regards.`
     });
-    return "Ok";
   }
 
   async sendEmailPassword(email, password) {
-    const result = await this.mailerService.sendMail({
+    await this.mailerService.sendMail({
       to: email,
       subject: "Password Change",
       text: `Hello,\nA new password is generate for you. The password is: ${password} \nIf you are not the originator of this request please ignore this message.\n\n Best Regards.`
     });
-    return "Ok";
   }
 
   async validateUser(validateUserDTO: ValidateUserDTO) {
@@ -238,10 +250,20 @@ export class UserService {
     const userToSave = new this.userModel(userFound);
     const userSaved: User = await userToSave.save();
 
-    await this.sendEmailPassword(userSaved.email, password);
+    this.sendEmailPassword(userSaved.email, password);
 
     const userModel = new UserModel(userSaved);
 
     return userModel.getResource();
+  }
+
+  async deleteById(id: String) {
+    const userFound: User = await this.userModel.findById(id);
+    if (!userFound) {
+      throw new ConflictException("User not exist");
+    }
+    // Delete test
+    await this.recipientService.findByUserAndDelete(userFound._id);
+    return this.userModel.findOneAndRemove({ _id: id });
   }
 }

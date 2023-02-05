@@ -193,8 +193,14 @@ export class RecipientService {
     if (search && search.name) {
       queryUser["$text"] = { $search: search.name };
     }
+    if (search && search.job) {
+      queryUser["job"] = { $eq: search.job };
+    }
     if (Object.keys(queryUser).length) {
       users = await this.userModel.find(queryUser);
+      if (!users.length) {
+        return [];
+      }
     }
     if (users && users.length) {
       query["user"] = { $in: users.map(r => r._id.toString()) };
@@ -295,5 +301,9 @@ export class RecipientService {
     const recipientTestModel = new RecipientModel(recipientTestFound);
 
     return recipientTestModel.getResource();
+  }
+
+  async findByUserAndDelete(user: string) {
+    return this.recipientModel.findOneAndRemove({ user });
   }
 }

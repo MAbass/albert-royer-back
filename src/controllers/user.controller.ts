@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards
+} from "@nestjs/common";
 import {
   AddUserDTO,
   PaginationParams,
@@ -10,6 +20,7 @@ import {
 import { UserService } from "@services";
 import { User } from "@entities";
 import { UserModel } from "@models";
+import { JwtAuthGuard } from "../services/guards/jwt-auth.guard";
 
 @Controller("/user")
 export class UserController {
@@ -23,6 +34,7 @@ export class UserController {
   }
 
   @Get("")
+  @UseGuards(JwtAuthGuard)
   async getUsers(@Query() { page, size, search }: PaginationParams) {
     const parseSearch: SearchParamsUserDTO = JSON.parse(search);
     return this.userService.getAll(parseSearch, page, size);
@@ -46,5 +58,10 @@ export class UserController {
   @Post("/reset-password")
   async resetPassword(@Body() resetPasswordDTO: ResetPasswordDTO) {
     return this.userService.resetPassword(resetPasswordDTO);
+  }
+
+  @Delete("/:id")
+  async deleteById(@Param("id") id: String) {
+    return this.userService.deleteById(id);
   }
 }

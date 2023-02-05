@@ -16,7 +16,7 @@ import { SubtestModule } from "./subtest.module";
     UserModule,
     SubtestModule
   ],
-  exports: [],
+  exports: [RecipientService],
   controllers: [RecipientController],
   providers: [RecipientService]
 })

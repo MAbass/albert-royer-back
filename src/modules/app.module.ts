@@ -13,6 +13,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import configEnvironment from "@config-env";
 import { MailerModule } from "@nestjs-modules/mailer";
+import { JobModule } from "./job.module";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MailerModule } from "@nestjs-modules/mailer";
     forwardRef(() => SubtestModule),
     forwardRef(() => AuthModule),
     forwardRef(() => RecipientTestModule),
+    forwardRef(() => JobModule),
     ConfigModule.forRoot({
       envFilePath: `${process.cwd()}/.env.${process.env.NODE_ENV}`,
       isGlobal: true,

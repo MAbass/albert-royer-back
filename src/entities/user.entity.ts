@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import { Document } from "mongoose";
 import { Role } from "./role.entity";
 import { SubTest } from "./subtest.entity";
+import { Job } from "./job.entity";
 
 export type UserDocument = User & Document;
 
@@ -42,6 +43,9 @@ export class User {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Role" })
   role: Role;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Job" })
+  job: Job;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);

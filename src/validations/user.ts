@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsMongoId,
   IsNotEmpty,
@@ -38,6 +39,10 @@ export class AddUserDTO {
   @IsString()
   @IsNotEmpty({ message: "The role name is required" })
   public role: string;
+
+  @IsString()
+  @IsNotEmpty({ message: "The jobId name is required" })
+  public jobId: string;
 }
 
 export class UserLogin {
@@ -68,6 +73,10 @@ export class SearchParamsUserDTO {
   @IsString()
   @IsOptional()
   role: string;
+
+  @IsString()
+  @IsOptional()
+  job: string;
 }
 
 export class UpdateUserDTO {
@@ -89,6 +98,10 @@ export class UpdateUserDTO {
   @IsString()
   @IsOptional()
   public role: string;
+
+  @IsBoolean()
+  @IsOptional()
+  public isVerified: boolean;
 }
 
 export class ResetPasswordDTO {
