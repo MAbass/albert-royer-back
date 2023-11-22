@@ -98,7 +98,16 @@ export class SubtestService {
   }
 
   async downloadPdf(search: string) {
-    const browser = await launch();
+    this.logger.debug(`Env: ${this.configService.get("LINK_REPORT")}`);
+    let browser;
+    if (process.env.NODE_ENV === "stag" || process.env.NODE_ENV === "prod") {
+      browser = await launch({
+        executablePath: "/usr/bin/google-chrome",
+        args: ["--no-sandbox"]
+      });
+    } else {
+      browser = await launch();
+    }
 
     // Create a new page
     const page = await browser.newPage();
@@ -112,7 +121,7 @@ export class SubtestService {
     //To reflect CSS used for screens instead of print
     await page.emulateMediaType("screen");
 
-    // Downlaod the PDF
+    // Download the PDF
     await page.pdf({
       path: "src/assets/files/result.pdf",
       margin: { right: "50px", left: "50px" },
