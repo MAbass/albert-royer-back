@@ -47,21 +47,12 @@ export class MongooseConfigService implements MongooseOptionsFactory {
     const hostname = this.configService.get("MONGO_HOST");
     const port = this.configService.get("MONGO_PORT");
     const database = this.configService.get("MONGO_DATABASE");
-    const user = this.configService.get("MONGO_USER");
+    const username = this.configService.get("MONGO_USER");
     const password = this.configService.get("MONGO_PASS");
-
-    // this.logger.debug(`User:${user}`)
-    // this.logger.debug(`Password:${password}`)
-    // this.logger.debug(`Hostname:${hostname}`)
-    // this.logger.debug(`Port:${port}`)
-    // this.logger.debug(`Database:${database}`)
+    // this.logger.debug(`mongodb://${username}:${password}@${hostname}:${port}/${database}?authSource=admin`)
 
     return {
-      uri: `mongodb://${hostname}:${port}/${database}`,
-      user: user,
-      pass: password,
-      authMechanism: "DEFAULT",
-      authSource: "admin"
+      uri: `mongodb://${username}:${password}@${hostname}:${port}/${database}?authSource=admin`
     };
   }
 }

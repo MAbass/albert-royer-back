@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { SubTest, SubTestDocument } from "@entities";
 import { SubTestAddDTO, TestResponse } from "@validations";
 import { InjectModel } from "@nestjs/mongoose";
@@ -28,7 +28,11 @@ export class SubtestService {
   }
 
   async getAll() {
-    const subTests: Array<SubTest> = await this.subTestModel.find();
+    const subTests: Array<SubTest> = await this.subTestModel.find(
+      {},
+      {},
+      { sort: { createdAt: 1 } }
+    );
     for (const subTest of subTests) {
       subTest.quiz = await this.quizService.getQuizzes(
         subTest.quiz.map(id => id.toString())
@@ -82,13 +86,15 @@ export class SubtestService {
     return "OK";
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<SubTest> {
     const subTest: SubTest = await this.subTestModel.findById(id);
+    if (!subTest) {
+      throw new NotFoundException("The subtest not exist.");
+    }
     subTest.quiz = await this.quizService.getQuizzes(
       subTest.quiz.map(id => id.toString())
     );
-    const subTestModel: SubtestModel = new SubtestModel(subTest);
-    return subTestModel.getResource();
+    return subTest;
   }
 
   async downloadPdf(search: string) {

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -16,9 +17,10 @@ import {
   UpdateUserDTO,
   ValidateUserDTO
 } from "@validations";
-import { JwtAuthGuard, UserService } from "@services";
+import { UserService } from "@services";
 import { User } from "@entities";
 import { UserModel } from "@models";
+import { JwtAuthGuard } from "../services/guards/jwt-auth.guard";
 
 @Controller("/user")
 export class UserController {
@@ -39,13 +41,11 @@ export class UserController {
   }
 
   @Get("/:id")
-  @UseGuards(JwtAuthGuard)
   async getUserById(@Param("id") id: String) {
     return this.userService.getUserById(id);
   }
 
   @Put("/:id/update")
-  @UseGuards(JwtAuthGuard)
   async updateUser(@Param("id") id: String, @Body() updateDTO: UpdateUserDTO) {
     return this.userService.updateUser(id, updateDTO);
   }
@@ -58,5 +58,10 @@ export class UserController {
   @Post("/reset-password")
   async resetPassword(@Body() resetPasswordDTO: ResetPasswordDTO) {
     return this.userService.resetPassword(resetPasswordDTO);
+  }
+
+  @Delete("/:id")
+  async deleteById(@Param("id") id: String) {
+    return this.userService.deleteById(id);
   }
 }

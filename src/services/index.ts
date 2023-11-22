@@ -8,3 +8,4 @@ export * from "./strategy/jwt.strategy";
 export * from "./guards/jwt-auth.guard";
 export * from "./guards/local-auth.guard";
 export * from "./recipient.service";
+export * from "./job.service";

@@ -1,6 +1,9 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { SubTestAddDTO, TestResponse } from "@validations";
-import { JwtAuthGuard, SubtestService } from "@services";
+import { SubtestService } from "@services";
+import { JwtAuthGuard } from "../services/guards/jwt-auth.guard";
+import { SubtestModel } from "@models";
+import { SubTest } from "@entities";
 
 @Controller("/subtest")
 export class SubtestController {
@@ -24,13 +27,17 @@ export class SubtestController {
   }
 
   @Get(":name")
+  @UseGuards(JwtAuthGuard)
   async getSubTestByName(@Param("name") name: string): Promise<any> {
     return this.subtestService.getByName(name);
   }
 
   @Get(":id/by-id")
+  @UseGuards(JwtAuthGuard)
   async getSubTestById(@Param("id") name: string): Promise<any> {
-    return this.subtestService.getById(name);
+    const subTest: SubTest = await this.subtestService.getById(name);
+    const subTestModel: SubtestModel = new SubtestModel(subTest);
+    return subTestModel.getResource();
   }
 
   @Get("/pdf/download/:search")

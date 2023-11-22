@@ -4,3 +4,4 @@ export * from "./quiz.controller";
 export * from "./subtest.controller";
 export * from "./auth.controller";
 export * from "./recipient.controller";
+export * from "./job.controller";

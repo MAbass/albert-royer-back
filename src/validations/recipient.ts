@@ -59,6 +59,10 @@ export class SearchParams {
   @IsOptional()
   @IsMongoId()
   subtest: number;
+
+  @IsOptional()
+  @IsMongoId()
+  job: number;
 }
 
 export class AddComment {

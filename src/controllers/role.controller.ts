@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { AddRoleDTO } from "@validations";
-import { JwtAuthGuard, RoleService } from "@services";
+import { RoleService } from "@services";
+import { JwtAuthGuard } from "../services/guards/jwt-auth.guard";
 
 @Controller("/role")
 export class RoleController {

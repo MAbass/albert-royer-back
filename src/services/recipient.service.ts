@@ -88,36 +88,41 @@ export class RecipientService {
     // Processing Third Quiz
     const thirdQuiz = addRecipientDTO.data.thirdQuiz;
     if (thirdQuiz) {
-      const thirdQuizChoice = thirdQuiz["data"]["images"].filter(
+      const thirdSelect = thirdQuiz["data"]["images"].filter(
         quiz => quiz["choice"]
-      )[0]["choice"];
-      const retrieveThirdQuiz = await this.quizService.getQuiz(thirdQuiz["id"]);
-      thirdQuiz["data"][thirdQuizChoice].map(response => {
-        // console.log(response)
-        const nameQuestion = response["name"];
-        const givingResponse = response["question"].filter(
-          response => response.value === true
-        )[0];
-        const rightResponseOfChoice = retrieveThirdQuiz.listOfResponses.filter(
-          response => response[thirdQuizChoice]
-        )[0][thirdQuizChoice];
-        const rightResponse = rightResponseOfChoice.filter(
-          response => response[nameQuestion]
-        )[0];
-        if (
-          givingResponse &&
-          givingResponse["title"] === rightResponse[nameQuestion]
-        ) {
-          resultThirdQuiz += 1;
-        }
-      });
+      );
+      if (thirdSelect[0]) {
+        const thirdQuizChoice = thirdSelect[0]["choice"];
+        const retrieveThirdQuiz = await this.quizService.getQuiz(
+          thirdQuiz["id"]
+        );
+        thirdQuiz["data"][thirdQuizChoice].map(response => {
+          // console.log(response)
+          const nameQuestion = response["name"];
+          const givingResponse = response["question"].filter(
+            response => response.value === true
+          )[0];
+          const rightResponseOfChoice = retrieveThirdQuiz.listOfResponses.filter(
+            response => response[thirdQuizChoice]
+          )[0][thirdQuizChoice];
+          const rightResponse = rightResponseOfChoice.filter(
+            response => response[nameQuestion]
+          )[0];
+          if (
+            givingResponse &&
+            givingResponse["title"] === rightResponse[nameQuestion]
+          ) {
+            resultThirdQuiz += 1;
+          }
+        });
+      }
     } // Processing Fourth Quiz
     const fourthQuiz = addRecipientDTO.data.fourthQuiz;
     if (fourthQuiz) {
       const responseFourthQuiz = fourthQuiz["data"][0]["question"].filter(
         response => response["value"] === true
       )[0];
-      if (responseFourthQuiz["title"] === "Non") {
+      if (responseFourthQuiz && responseFourthQuiz["title"] === "Non") {
         resultFourthQuiz = 1;
       }
     }
@@ -188,8 +193,14 @@ export class RecipientService {
     if (search && search.name) {
       queryUser["$text"] = { $search: search.name };
     }
+    if (search && search.job) {
+      queryUser["job"] = { $eq: search.job };
+    }
     if (Object.keys(queryUser).length) {
       users = await this.userModel.find(queryUser);
+      if (!users.length) {
+        return [];
+      }
     }
     if (users && users.length) {
       query["user"] = { $in: users.map(r => r._id.toString()) };
@@ -292,12 +303,7 @@ export class RecipientService {
     return recipientTestModel.getResource();
   }
 
-  async checkIfRecipientHasTest(id: string) {
-    this.logger.debug(`---------------Id:${id}`);
-    if (id === "undefined") {
-      return false;
-    }
-    const recipientTestFound = await this.recipientModel.findOne({ user: id });
-    return !!recipientTestFound;
+  async findByUserAndDelete(user: string) {
+    return this.recipientModel.findOneAndRemove({ user });
   }
 }

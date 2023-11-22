@@ -3,3 +3,4 @@ export * from "./role";
 export * from "./recipient";
 export * from "./quiz";
 export * from "./subtest";
+export * from "./job";
