@@ -34,6 +34,7 @@ import { MailerService } from "@nestjs-modules/mailer";
 import { uuidv4 } from "@utils";
 import { generate } from "generate-password";
 import { RecipientService } from "./recipient.service";
+import axios from "axios";
 
 @Injectable()
 export class UserService {
@@ -187,17 +188,38 @@ export class UserService {
     return userModel.getResource();
   }
 
-  async sendEmailForCreateAccount(email, token) {
-    await this.mailerService.sendMail({
-      to: email,
-      subject: "Verify mail",
-      text: `Hello,\nIf you want to validate your account please click on this link ${this.configService.get(
-        "HOST_CONFIRM_EMAIL"
-      ) +
-        email +
-        "/" +
-        token}.\nIf you are not the originator of this request please ignore this message.\n\n Best Regards.`
-    });
+  async sendEmailForCreateAccount(email: string, token: string) {
+    await axios.post(
+      "https://notification.dpworld.sn/SendEmail",
+      {
+        Emetteur: "testpsycho@dpworld.sn",
+        Destinataire: email,
+        Subject: "Verify mail",
+        Message: `Hello,\nIf you want to validate your account please click on this link ${this.configService.get(
+          "HOST_CONFIRM_EMAIL"
+        ) +
+          email +
+          "/" +
+          token}.\nIf you are not the originator of this request please ignore this message.\n\n Best Regards.`
+      },
+      {
+        auth: {
+          username: "testpsychohr",
+          password: "t$stHR@2023Psych0"
+        }
+      }
+    );
+
+    /*await this.mailerService.sendMail({
+          to: email,
+          subject: "Verify mail",
+          text: `Hello,\nIf you want to validate your account please click on this link ${this.configService.get(
+            "HOST_CONFIRM_EMAIL"
+          ) +
+            email +
+            "/" +
+            token}.\nIf you are not the originator of this request please ignore this message.\n\n Best Regards.`
+        });*/
   }
 
   async sendEmailPassword(email, password) {
