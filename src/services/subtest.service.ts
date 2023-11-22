@@ -28,7 +28,11 @@ export class SubtestService {
   }
 
   async getAll() {
-    const subTests: Array<SubTest> = await this.subTestModel.find();
+    const subTests: Array<SubTest> = await this.subTestModel.find(
+      {},
+      {},
+      { sort: { createdAt: 1 } }
+    );
     for (const subTest of subTests) {
       subTest.quiz = await this.quizService.getQuizzes(
         subTest.quiz.map(id => id.toString())

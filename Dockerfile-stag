@@ -14,7 +14,7 @@ COPY . .
 RUN yarn install
 
 # Creates a "dist" folder with the production build
-RUN yarn run build:prod
+RUN yarn run build:stag
 
 # Start the server using the staging build
-CMD [ "yarn", "run", "start:prod:linux" ]
+CMD [ "yarn", "run", "start:stag:linux" ]
