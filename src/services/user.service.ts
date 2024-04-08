@@ -223,11 +223,21 @@ export class UserService {
   }
 
   async sendEmailPassword(email, password) {
-    await this.mailerService.sendMail({
-      to: email,
-      subject: "Password Change",
-      text: `Hello,\nA new password is generate for you. The password is: ${password} \nIf you are not the originator of this request please ignore this message.\n\n Best Regards.`
-    });
+    await axios.post(
+      "https://notification.dpworld.sn/SendEmail",
+      {
+        Emetteur: "testpsycho@dpworld.sn",
+        Destinataire: email,
+        Subject: "Password Change",
+        Message: `Hello,\nA new password is generate for you. The password is: ${password}\nIf you are not the originator of this request please ignore this message.\n\nBest Regards.`
+      },
+      {
+        auth: {
+          username: "testpsychohr",
+          password: "t$stHR@2023Psych0"
+        }
+      }
+    );
   }
 
   async validateUser(validateUserDTO: ValidateUserDTO) {

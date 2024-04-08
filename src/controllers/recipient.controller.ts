@@ -39,6 +39,12 @@ export class RecipientController {
     return this.recipientService.findRecipientById(id);
   }
 
+  @Get("/:id/haveTest")
+  @UseGuards(JwtAuthGuard)
+  async findIfRecipientHaveTest(@Param("id") id: String) {
+    return this.recipientService.findIfRecipientHaveTest(id);
+  }
+
   @Put("/:id/add-decision")
   @UseGuards(JwtAuthGuard)
   async addDecision(@Param("id") id: String, @Body() addComment: AddComment) {

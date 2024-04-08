@@ -306,4 +306,8 @@ export class RecipientService {
   async findByUserAndDelete(user: string) {
     return this.recipientModel.findOneAndRemove({ user });
   }
+
+  findIfRecipientHaveTest(user: String) {
+    return this.recipientModel.findOne({ user });
+  }
 }
