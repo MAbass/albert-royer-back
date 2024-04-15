@@ -7,6 +7,7 @@ import { RecipientTestModule, RoleModule, SubtestModule } from "@modules";
 import { ConfigModule } from "@nestjs/config";
 import { MailerModule } from "@nestjs-modules/mailer";
 import { JobModule } from "./job.module";
+import { AxiosExchange } from "../config/axios";
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { JobModule } from "./job.module";
     forwardRef(() => RecipientTestModule),
     forwardRef(() => JobModule)
   ],
-  providers: [UserService],
+  providers: [UserService, AxiosExchange],
   exports: [UserService, MongooseModule],
   controllers: [UserController]
 })

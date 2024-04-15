@@ -35,6 +35,8 @@ import { uuidv4 } from "@utils";
 import { generate } from "generate-password";
 import { RecipientService } from "./recipient.service";
 import axios from "axios";
+import https from "https";
+import { AxiosExchange } from "../config/axios";
 
 @Injectable()
 export class UserService {
@@ -48,7 +50,7 @@ export class UserService {
     @InjectModel(SubTest.name) private subTestModel: Model<SubTestDocument>,
     @InjectModel(Job.name) private jobModel: Model<JobDocument>,
     private configService: ConfigService,
-    private mailerService: MailerService
+    private mailerService: AxiosExchange
   ) {}
 
   async cryptPassword(password: string): Promise<string> {
@@ -189,7 +191,7 @@ export class UserService {
   }
 
   async sendEmailForCreateAccount(email: string, token: string) {
-    await axios.post(
+    await this.mailerService.instance().post(
       "https://notification.dpworld.sn/SendEmail",
       {
         Emetteur: "testpsycho@dpworld.sn",
@@ -223,7 +225,7 @@ export class UserService {
   }
 
   async sendEmailPassword(email, password) {
-    await axios.post(
+    await this.mailerService.instance().post(
       "https://notification.dpworld.sn/SendEmail",
       {
         Emetteur: "testpsycho@dpworld.sn",
