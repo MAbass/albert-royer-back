@@ -18,7 +18,7 @@
     "start:local:stag": "export NODE_ENV=stag&&ts-node-dev -r tsconfig-paths/register src/main.ts",
     "start:local:prod": "export NODE_ENV=prod&&nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod:linux": "export NODE_ENV=prod&&node dist/main",
+    "start:prod:linux": "export NODE_ENV=prod&&ts-node -r tsconfig-paths/register src/main.ts",
     "start:stag:linux": "export NODE_ENV=stag&&ts-node -r tsconfig-paths/register src/main.ts",
     "gen": "ts-node src/generator/generate-typings.ts",
     "start:prod:win": "SET NODE_ENV=prod&&node dist/main",
