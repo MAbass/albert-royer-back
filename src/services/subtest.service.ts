@@ -6,8 +6,9 @@ import { Model } from "mongoose";
 import { QuizService } from "./quiz.service";
 import { SubtestModel } from "@models";
 import { launch } from "puppeteer";
-import { getReport } from "@common";
+import { deletefile, getReport } from "@common";
 import { ConfigService } from "@nestjs/config";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class SubtestService {
@@ -98,6 +99,10 @@ export class SubtestService {
   }
 
   async downloadPdf(search: string) {
+    let myuuid = uuidv4();
+
+    this.logger.debug(myuuid);
+
     this.logger.debug(`Env: ${this.configService.get("LINK_REPORT")}`);
     let browser;
     if (process.env.NODE_ENV === "stag" || process.env.NODE_ENV === "prod") {
@@ -123,12 +128,16 @@ export class SubtestService {
 
     // Download the PDF
     await page.pdf({
-      path: "src/assets/files/result.pdf",
+      path: `src/assets/files/${myuuid}.pdf`,
       margin: { right: "50px", left: "50px" },
       // printBackground: true,
       format: "A4"
     });
 
-    return getReport();
+    const result_rapport = getReport(myuuid);
+
+    deletefile(myuuid);
+
+    return result_rapport;
   }
 }

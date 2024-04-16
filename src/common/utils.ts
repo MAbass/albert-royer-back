@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, unlinkSync } from "fs";
 import { dirname } from "path";
 
 export async function base64_encode(filename) {
@@ -9,9 +9,14 @@ export async function base64_encode(filename) {
   );
 }
 
-export async function getReport() {
+export async function deletefile(id) {
   const appDir = dirname(require.main.filename);
-  return readFileSync(appDir + "/assets/files/result.pdf", "base64");
+  return unlinkSync(appDir + "/assets/files/" + id + ".pdf");
+}
+
+export async function getReport(id: string) {
+  const appDir = dirname(require.main.filename);
+  return readFileSync(appDir + "/assets/files/" + id + ".pdf", "base64");
 }
 
 export function getDecisionFirstQuiz(score) {
